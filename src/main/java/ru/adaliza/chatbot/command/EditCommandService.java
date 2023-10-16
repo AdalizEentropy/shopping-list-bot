@@ -10,7 +10,7 @@ public class EditCommandService extends AbstractBotCommandService {
 
     @Override
     public SendMessage createMessageForCommand(Long chatId) {
-        var text = "Enter product for edit";
-        return createTextReplyMessage(chatId, text);
+        var text = "Choose product for edit";
+        return createButtonReplyMessage(chatId, text);
     }
 }

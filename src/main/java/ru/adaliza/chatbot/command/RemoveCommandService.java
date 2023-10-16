@@ -10,7 +10,7 @@ public class RemoveCommandService extends AbstractBotCommandService {
 
     @Override
     public SendMessage createMessageForCommand(Long chatId) {
-        var text = "Enter product for remove";
-        return createTextReplyMessage(chatId, text);
+        var text = "Choose product for remove";
+        return createButtonReplyMessage(chatId, text);
     }
 }

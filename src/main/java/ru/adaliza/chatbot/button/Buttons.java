@@ -6,7 +6,9 @@ import lombok.experimental.UtilityClass;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.adaliza.chatbot.model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @UtilityClass
@@ -42,6 +44,26 @@ public class Buttons {
         MAIN_MENU_BUTTON.setCallbackData(MENU.getTextCommand());
 
         List<List<InlineKeyboardButton>> rows = List.of(List.of(MAIN_MENU_BUTTON));
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        markupInline.setKeyboard(rows);
+
+        return markupInline;
+    }
+
+    public static InlineKeyboardMarkup inlineProductsMarkup() {
+        List<Product> products = List.of(
+                new Product(1L, "tomato", 1L),
+                new Product(2L, "cucumber 1kg", 1L),
+                new Product(3L, "eggs 10", 1L));
+
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        for (Product product : products) {
+            String name = product.name();
+            InlineKeyboardButton productButton = new InlineKeyboardButton(name);
+            productButton.setCallbackData("/" + name);
+            rows.add(List.of(productButton));
+        }
+
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         markupInline.setKeyboard(rows);
 
