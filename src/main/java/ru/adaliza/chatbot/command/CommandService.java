@@ -1,11 +1,22 @@
 package ru.adaliza.chatbot.command;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import ru.adaliza.chatbot.dao.InMemoryRepository;
+import ru.adaliza.chatbot.model.Product;
+
+import java.util.List;
+
+import static org.telegram.telegrambots.meta.api.methods.ParseMode.*;
+
 @Service
+@RequiredArgsConstructor
 public class CommandService implements BotCommandService {
+    private final InMemoryRepository repository;
 
     @Override
     public SendMessage replyOnCommand(Update update) {
@@ -20,10 +31,19 @@ public class CommandService implements BotCommandService {
             case REMOVE -> replyMessage = removeCommand(chatId);
             case SHOW -> replyMessage = showCommand(chatId);
             case HELP -> replyMessage = helpCommand(chatId);
+            case START -> replyMessage = startCommand(chatId);
             default -> replyMessage = unknownCommand(chatId);
         }
 
         return replyMessage;
+    }
+
+    private SendMessage startCommand(Long chatId) {
+        var chatIdStr = String.valueOf(chatId);
+        var sendMessage = new SendMessage(chatIdStr, "choose command");
+        sendMessage.setReplyMarkup(Buttons.inlineMainMenuMarkup());
+
+        return sendMessage;
     }
 
     private SendMessage addCommand(Long chatId) {
@@ -42,8 +62,17 @@ public class CommandService implements BotCommandService {
     }
 
     private SendMessage showCommand(Long chatId) {
-        var text = "Your shopping list:";
-        return createTextReplyMessage(chatId, text);
+        List<Product> allShoppingList = repository.getAllShoppingList();
+        StringBuilder builder = new StringBuilder();
+        builder.append("*Your shopping list:*");
+        builder.append("\n");
+        allShoppingList.forEach(
+                product -> {
+                    builder.append("\\- ");
+                    builder.append(product.name());
+                    builder.append("\n");
+                });
+        return createTextReplyMessage(chatId, builder.toString());
     }
 
     private SendMessage helpCommand(Long chatId) {
@@ -52,7 +81,7 @@ public class CommandService implements BotCommandService {
     }
 
     private SendMessage unknownCommand(Long chatId) {
-        var text = "Unknown command!";
+        var text = "Unknown command\\!";
         return createTextReplyMessage(chatId, text);
     }
 
@@ -60,6 +89,7 @@ public class CommandService implements BotCommandService {
         var chatIdStr = String.valueOf(chatId);
         var sendMessage = new SendMessage(chatIdStr, text);
         sendMessage.setReplyMarkup(Buttons.inlineInnerMenuMarkup());
+        sendMessage.setParseMode(MARKDOWNV2);
 
         return sendMessage;
     }
