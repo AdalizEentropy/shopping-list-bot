@@ -1,4 +1,4 @@
-package ru.adaliza.chatbot.command;
+package ru.adaliza.chatbot.button;
 
 import static ru.adaliza.chatbot.command.BotCommand.*;
 
@@ -39,7 +39,7 @@ public class Buttons {
     }
 
     public static InlineKeyboardMarkup inlineInnerMenuMarkup() {
-        MAIN_MENU_BUTTON.setCallbackData(START.getTextCommand());
+        MAIN_MENU_BUTTON.setCallbackData(MENU.getTextCommand());
 
         List<List<InlineKeyboardButton>> rows = List.of(List.of(MAIN_MENU_BUTTON));
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();

@@ -1,4 +1,4 @@
-package ru.adaliza.chatbot.bot;
+package ru.adaliza.chatbot;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,8 +9,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import ru.adaliza.chatbot.command.BotCommandService;
-import ru.adaliza.chatbot.noncommand.BotTextMessageService;
+import ru.adaliza.chatbot.button.BotButtonService;
+import ru.adaliza.chatbot.textmessage.BotTextMessageService;
 import ru.adaliza.chatbot.property.BotProperties;
 
 @Slf4j
@@ -18,17 +18,17 @@ import ru.adaliza.chatbot.property.BotProperties;
 public class ShoppingListBot extends TelegramLongPollingBot {
     private final BotProperties properties;
     private final BotTextMessageService textMessageService;
-    private final BotCommandService commandService;
+    private final BotButtonService buttonService;
 
     @Autowired
     public ShoppingListBot(
             BotProperties properties,
             BotTextMessageService textMessageService,
-            BotCommandService commandService) {
+            BotButtonService buttonService) {
         super(properties.getToken());
         this.properties = properties;
         this.textMessageService = textMessageService;
-        this.commandService = commandService;
+        this.buttonService = buttonService;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
             SendMessage replyMessage = textMessageService.replyOnTextMessage(update);
             sendMessage(replyMessage);
         } else if (update.hasCallbackQuery()) {
-            SendMessage replyMessage = commandService.replyOnCommand(update);
+            SendMessage replyMessage = buttonService.replyOnCommand(update);
             sendMessage(replyMessage);
         } else {
             // nothing to do

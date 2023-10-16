@@ -1,11 +1,11 @@
-package ru.adaliza.chatbot.noncommand;
+package ru.adaliza.chatbot.textmessage;
 
 import static ru.adaliza.chatbot.command.BotCommand.START;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.adaliza.chatbot.command.Buttons;
+import ru.adaliza.chatbot.button.Buttons;
 
 @Service
 public class TextMessageService implements BotTextMessageService {

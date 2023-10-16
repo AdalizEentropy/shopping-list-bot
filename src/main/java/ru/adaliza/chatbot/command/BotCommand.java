@@ -8,6 +8,7 @@ public enum BotCommand {
     EDIT("/edit"),
     SHOW("/show"),
     REMOVE("/remove"),
+    MENU("/menu"),
     HELP("/help");
 
     private final String command;

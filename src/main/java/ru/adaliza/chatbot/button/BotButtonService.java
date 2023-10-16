@@ -1,9 +1,9 @@
-package ru.adaliza.chatbot.noncommand;
+package ru.adaliza.chatbot.button;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public interface BotTextMessageService {
+public interface BotButtonService {
 
-    SendMessage replyOnTextMessage(Update update);
+    SendMessage replyOnCommand(Update update);
 }
