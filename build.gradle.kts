@@ -21,17 +21,19 @@ val lombokVersion: String by project
 val telegramVersion: String by project
 
 dependencies {
-    // ---spring ---//
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
     //--- lombok ---//
     implementation("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
+    // ---spring ---//
+    implementation("org.springframework.boot:spring-boot-starter")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
     //--- telegram ---//
     implementation("org.telegram:telegrambots:$telegramVersion")
     implementation("org.telegram:telegrambotsextensions:$telegramVersion")
+    implementation("org.telegram:telegrambots-abilities:$telegramVersion")
 }
 
 tasks.withType<Test> {
