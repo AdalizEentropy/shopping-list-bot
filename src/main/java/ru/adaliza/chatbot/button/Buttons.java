@@ -52,9 +52,9 @@ public class Buttons {
 
     public static InlineKeyboardMarkup inlineProductsMarkup() {
         List<Product> products = List.of(
-                new Product(1L, "tomato", 1L),
-                new Product(2L, "cucumber 1kg", 1L),
-                new Product(3L, "eggs 10", 1L));
+                new Product(1L, "tomato"),
+                new Product(2L, "cucumber 1kg"),
+                new Product(3L, "eggs 10"));
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         for (Product product : products) {

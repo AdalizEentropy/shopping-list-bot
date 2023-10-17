@@ -2,3 +2,10 @@ telegram:
     bot:
         username: ${BOT_NAME}
         token: ${BOT_TOKEN}
+
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5430/shopping-list
+        driverClassName: org.postgresql.Driver
+        username: shoppinguser
+        password: shoppingpassword

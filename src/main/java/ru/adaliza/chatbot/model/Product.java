@@ -1,9 +1,8 @@
 package ru.adaliza.chatbot.model;
 
-public record Product(Long id, String name, Long shoppingListId) {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-    @Override
-    public String toString() {
-        return name;
-    }
-}
+@Table("products")
+public record Product(@Id Long id, @Column(value = "product_name") String name) {}
