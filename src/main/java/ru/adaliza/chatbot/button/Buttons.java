@@ -4,6 +4,7 @@ import static ru.adaliza.chatbot.command.BotCommand.*;
 
 import lombok.experimental.UtilityClass;
 
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.adaliza.chatbot.model.Product;
@@ -14,23 +15,23 @@ import java.util.List;
 @UtilityClass
 public class Buttons {
     private static final InlineKeyboardButton SHOW_BUTTON =
-            new InlineKeyboardButton("Show shopping list");
-    private static final InlineKeyboardButton ADD_BUTTON = new InlineKeyboardButton("Add product");
-    private static final InlineKeyboardButton EDIT_BUTTON =
-            new InlineKeyboardButton("Edit product");
+            new InlineKeyboardButton("🛒 Show shopping list");
+    private static final InlineKeyboardButton ADD_BUTTON = new InlineKeyboardButton("➕ Add product");
     private static final InlineKeyboardButton REMOVE_BUTTON =
-            new InlineKeyboardButton("Remove product");
-    private static final InlineKeyboardButton HELP_BUTTON = new InlineKeyboardButton("Help");
-    private static final InlineKeyboardButton MAIN_MENU_BUTTON = new InlineKeyboardButton("Main menu");
+            new InlineKeyboardButton("➖ Remove product");
+    private static final InlineKeyboardButton CLEAR_BUTTON =
+            new InlineKeyboardButton("❌ Remove all");
+    private static final InlineKeyboardButton HELP_BUTTON = new InlineKeyboardButton("❔ Help");
+    private static final InlineKeyboardButton MAIN_MENU_BUTTON = new InlineKeyboardButton("🔙 Main menu");
 
     public static InlineKeyboardMarkup inlineMainMenuMarkup() {
         SHOW_BUTTON.setCallbackData(SHOW.getTextCommand());
         ADD_BUTTON.setCallbackData(ADD.getTextCommand());
-        EDIT_BUTTON.setCallbackData(EDIT.getTextCommand());
+        CLEAR_BUTTON.setCallbackData(CLEAR.getTextCommand());
         REMOVE_BUTTON.setCallbackData(REMOVE.getTextCommand());
         HELP_BUTTON.setCallbackData(HELP.getTextCommand());
 
-        List<InlineKeyboardButton> rowInline = List.of(ADD_BUTTON, EDIT_BUTTON, REMOVE_BUTTON);
+        List<InlineKeyboardButton> rowInline = List.of(ADD_BUTTON, REMOVE_BUTTON, CLEAR_BUTTON);
         List<List<InlineKeyboardButton>> rows =
                 List.of(List.of(SHOW_BUTTON), rowInline, List.of(HELP_BUTTON));
 
@@ -50,17 +51,11 @@ public class Buttons {
         return markupInline;
     }
 
-    public static InlineKeyboardMarkup inlineProductsMarkup() {
-        List<Product> products = List.of(
-                new Product(1L, "tomato"),
-                new Product(2L, "cucumber 1kg"),
-                new Product(3L, "eggs 10"));
-
+    public static InlineKeyboardMarkup inlineProductsMarkup(List<Product> products) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         for (Product product : products) {
-            String name = product.name();
-            InlineKeyboardButton productButton = new InlineKeyboardButton(name);
-            productButton.setCallbackData("/" + name);
+            InlineKeyboardButton productButton = new InlineKeyboardButton(product.name());
+            productButton.setCallbackData(String.valueOf(product.id()));
             rows.add(List.of(productButton));
         }
 
@@ -68,5 +63,12 @@ public class Buttons {
         markupInline.setKeyboard(rows);
 
         return markupInline;
+    }
+
+    public static ForceReplyKeyboard forceReplyInnerMenuMarkup() {
+        ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
+        forceReplyKeyboard.setForceReply(true);
+
+        return forceReplyKeyboard;
     }
 }

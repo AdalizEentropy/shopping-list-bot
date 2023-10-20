@@ -15,12 +15,4 @@ public abstract class AbstractBotCommandService implements BotCommandService {
 
         return sendMessage;
     }
-
-    protected SendMessage createButtonReplyMessage(Long chatId, String text) {
-        var chatIdStr = String.valueOf(chatId);
-        var sendMessage = new SendMessage(chatIdStr, text);
-        sendMessage.setReplyMarkup(Buttons.inlineProductsMarkup());
-
-        return sendMessage;
-    }
 }

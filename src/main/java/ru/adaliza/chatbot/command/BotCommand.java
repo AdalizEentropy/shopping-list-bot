@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 public enum BotCommand {
     START("/start"),
     ADD("/add"),
-    EDIT("/edit"),
+    CLEAR("/clear"),
     SHOW("/show"),
     REMOVE("/remove"),
     MENU("/menu"),

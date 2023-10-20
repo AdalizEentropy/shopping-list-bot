@@ -13,7 +13,7 @@ import ru.adaliza.chatbot.command.BotCommandService;
 public class ButtonService implements BotButtonService {
     private final BotCommandService addCommand;
     private final BotCommandService showCommand;
-    private final BotCommandService editCommand;
+    private final BotCommandService clearCommand;
     private final BotCommandService removeCommand;
     private final BotCommandService helpCommand;
     private final BotCommandService unknownCommand;
@@ -23,14 +23,14 @@ public class ButtonService implements BotButtonService {
     public ButtonService(
             @Qualifier("addCommand") BotCommandService addCommand,
             @Qualifier("showCommand") BotCommandService showCommand,
-            @Qualifier("editCommand") BotCommandService editCommand,
+            @Qualifier("clearCommand") BotCommandService clearCommand,
             @Qualifier("removeCommand") BotCommandService removeCommand,
             @Qualifier("unknownCommand") BotCommandService unknownCommand,
             @Qualifier("menuCommand") BotCommandService menuCommand,
             @Qualifier("helpCommand") BotCommandService helpCommand) {
         this.addCommand = addCommand;
         this.showCommand = showCommand;
-        this.editCommand = editCommand;
+        this.clearCommand = clearCommand;
         this.removeCommand = removeCommand;
         this.unknownCommand = unknownCommand;
         this.menuCommand = menuCommand;
@@ -46,7 +46,7 @@ public class ButtonService implements BotButtonService {
         SendMessage replyMessage;
         switch (botCommand) {
             case ADD -> replyMessage = addCommand.createMessageForCommand(chatId);
-            case EDIT -> replyMessage = editCommand.createMessageForCommand(chatId);
+            case CLEAR -> replyMessage = clearCommand.createMessageForCommand(chatId);
             case REMOVE -> replyMessage = removeCommand.createMessageForCommand(chatId);
             case SHOW -> replyMessage = showCommand.createMessageForCommand(chatId);
             case HELP -> replyMessage = helpCommand.createMessageForCommand(chatId);
