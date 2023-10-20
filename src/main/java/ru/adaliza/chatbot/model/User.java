@@ -2,6 +2,7 @@ package ru.adaliza.chatbot.model;
 
 import lombok.Getter;
 
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.annotation.Transient;
@@ -15,7 +16,7 @@ public class User implements Persistable<Long> {
     @Id private final Long id;
     private final String username;
     @Transient private final boolean isNew;
-    private String chatPhase;
+    @Setter private String chatPhase;
 
     @MappedCollection(idColumn = "id")
     private ShoppingList shoppingList;

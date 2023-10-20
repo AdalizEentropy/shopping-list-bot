@@ -1,26 +1,26 @@
 package ru.adaliza.chatbot.command;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import ru.adaliza.chatbot.button.Buttons;
 
-@Service
-@Qualifier("addCommand")
-public class AddCommandService extends AbstractBotCommandService {
+import ru.adaliza.chatbot.message.AbstractMessageService;
+import ru.adaliza.chatbot.service.UserService;
+
+@Service("addCommand")
+@RequiredArgsConstructor
+public class AddCommandService extends AbstractMessageService implements BotCommandService {
     public static final String FOR_ADDING = "Enter product name for adding";
+    private final UserService userService;
 
     @Override
     public SendMessage createMessageForCommand(Long chatId) {
-        return createTextReplyMessage(chatId, FOR_ADDING);
-    }
-
-    @Override
-    protected SendMessage createTextReplyMessage(Long chatId, String text) {
-        var chatIdStr = String.valueOf(chatId);
-        var sendMessage = new SendMessage(chatIdStr, text);
-        sendMessage.setReplyMarkup(Buttons.forceReplyInnerMenuMarkup());
-
-        return sendMessage;
+        boolean updated = userService.updatePhase(chatId, BotCommand.ADD);
+        if (updated) {
+            return createTextWithKeyboardReplyMessage(chatId, FOR_ADDING);
+        } else {
+            return createTextWithKeyboardReplyMessage(chatId, ERROR_STATE);
+        }
     }
 }

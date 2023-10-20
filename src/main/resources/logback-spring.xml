@@ -2,7 +2,7 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} %X{module} [%thread] %-5level %logger{16} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{16} - %mdc{chatId}%msg%n</pattern>
         </encoder>
     </appender>
 

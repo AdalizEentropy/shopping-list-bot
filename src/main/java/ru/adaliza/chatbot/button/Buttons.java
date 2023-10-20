@@ -4,7 +4,6 @@ import static ru.adaliza.chatbot.command.BotCommand.*;
 
 import lombok.experimental.UtilityClass;
 
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.adaliza.chatbot.model.Product;
@@ -63,12 +62,5 @@ public class Buttons {
         markupInline.setKeyboard(rows);
 
         return markupInline;
-    }
-
-    public static ForceReplyKeyboard forceReplyInnerMenuMarkup() {
-        ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
-        forceReplyKeyboard.setForceReply(true);
-
-        return forceReplyKeyboard;
     }
 }

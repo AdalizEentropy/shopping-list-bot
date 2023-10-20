@@ -1,15 +1,16 @@
 package ru.adaliza.chatbot.command;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+
+import ru.adaliza.chatbot.message.AbstractMessageService;
 import ru.adaliza.chatbot.service.ProductService;
 
-@Service
+@Service("showCommand")
 @RequiredArgsConstructor
-@Qualifier("showCommand")
-public class ShowCommandService extends AbstractBotCommandService {
+public class ShowCommandService extends AbstractMessageService implements BotCommandService {
     private final ProductService productService;
 
     @Override
@@ -24,6 +25,6 @@ public class ShowCommandService extends AbstractBotCommandService {
                     builder.append(product.name());
                     builder.append("\n");
                 });
-        return createTextReplyMessage(chatId, builder.toString());
+        return createTextWithKeyboardReplyMessage(chatId, builder.toString());
     }
 }
