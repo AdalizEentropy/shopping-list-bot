@@ -46,7 +46,9 @@ public class ShoppingListBot extends TelegramLongPollingBot {
             SendMessage replyMessage = buttonService.replyOnMessage(update);
             executeMessage(replyMessage);
         } else {
-            // nothing to do
+            if (log.isDebugEnabled()) {
+                log.debug("Unexpected message type received");
+            }
         }
     }
 

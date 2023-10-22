@@ -7,5 +7,5 @@ spring:
     datasource:
         url: jdbc:postgresql://localhost:5430/shopping-list
         driverClassName: org.postgresql.Driver
-        username: shoppinguser
-        password: shoppingpassword
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
