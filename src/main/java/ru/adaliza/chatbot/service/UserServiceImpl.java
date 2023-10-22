@@ -1,14 +1,17 @@
 package ru.adaliza.chatbot.service;
 
-import lombok.RequiredArgsConstructor;
+import static ru.adaliza.chatbot.command.BotCommand.START;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.adaliza.chatbot.command.BotCommand;
 import ru.adaliza.chatbot.dao.ShoppingListRepository;
 import ru.adaliza.chatbot.dao.UserRepository;
+import ru.adaliza.chatbot.exception.IllegalPhaseException;
 import ru.adaliza.chatbot.model.ShoppingList;
 import ru.adaliza.chatbot.model.User;
 
@@ -23,10 +26,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void addUser(Long chatId, String userName) {
-        var user = userRepository.findById(chatId);
+        Optional<User> user = userRepository.findById(chatId);
         if (user.isEmpty()) {
-            userRepository.save(new User(chatId, userName, true));
+            userRepository.save(new User(chatId, userName, START, true));
             shoppingListRepository.save(new ShoppingList(chatId));
+        } else {
+            User updatedUser = user.get();
+            updatedUser.setChatPhase(START);
+            userRepository.save(updatedUser);
         }
     }
 
@@ -35,16 +42,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public boolean updatePhase(Long chatId, BotCommand command) {
+    public void updatePhase(Long chatId, BotCommand command) {
         Optional<User> savedUsed = userRepository.findById(chatId);
         if (savedUsed.isPresent()) {
             User user = savedUsed.get();
-            user.setChatPhase(command.toString());
+            user.setChatPhase(command);
             userRepository.save(user);
-            return true;
         } else {
             log.warn("Inappropriate phase execution. Phase: {}", command);
-            return false;
+            throw new IllegalPhaseException("Inappropriate phase execution");
         }
     }
 }

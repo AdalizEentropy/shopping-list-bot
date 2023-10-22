@@ -9,7 +9,8 @@ public enum BotCommand {
     SHOW("/show"),
     REMOVE("/remove"),
     MENU("/menu"),
-    HELP("/help");
+    HELP("/help"),
+    UNKNOWN("/unknown");
 
     private final String command;
 
@@ -21,10 +22,10 @@ public enum BotCommand {
         return Stream.of(BotCommand.values())
                 .filter(v -> v.command.equals(value))
                 .findFirst()
-                .orElse(null);
+                .orElse(UNKNOWN);
     }
 
-    public String getTextCommand() {
+    public String getCommand() {
         return command;
     }
 }

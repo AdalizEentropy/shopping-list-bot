@@ -1,8 +1,10 @@
 package ru.adaliza.chatbot.command;
 
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+
+import java.io.Serializable;
 
 public interface BotCommandService {
 
-    SendMessage createMessageForCommand(Long chatId);
+    BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData);
 }

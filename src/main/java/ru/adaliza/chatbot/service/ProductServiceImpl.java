@@ -1,12 +1,14 @@
 package ru.adaliza.chatbot.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.adaliza.chatbot.dao.ProductRepository;
 import ru.adaliza.chatbot.model.Product;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {

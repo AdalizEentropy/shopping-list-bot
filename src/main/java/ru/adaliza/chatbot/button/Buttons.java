@@ -24,11 +24,11 @@ public class Buttons {
     private static final InlineKeyboardButton MAIN_MENU_BUTTON = new InlineKeyboardButton("🔙 Main menu");
 
     public static InlineKeyboardMarkup inlineMainMenuMarkup() {
-        SHOW_BUTTON.setCallbackData(SHOW.getTextCommand());
-        ADD_BUTTON.setCallbackData(ADD.getTextCommand());
-        CLEAR_BUTTON.setCallbackData(CLEAR.getTextCommand());
-        REMOVE_BUTTON.setCallbackData(REMOVE.getTextCommand());
-        HELP_BUTTON.setCallbackData(HELP.getTextCommand());
+        SHOW_BUTTON.setCallbackData(SHOW.getCommand());
+        ADD_BUTTON.setCallbackData(ADD.getCommand());
+        CLEAR_BUTTON.setCallbackData(CLEAR.getCommand());
+        REMOVE_BUTTON.setCallbackData(REMOVE.getCommand());
+        HELP_BUTTON.setCallbackData(HELP.getCommand());
 
         List<InlineKeyboardButton> rowInline = List.of(ADD_BUTTON, REMOVE_BUTTON, CLEAR_BUTTON);
         List<List<InlineKeyboardButton>> rows =
@@ -41,7 +41,7 @@ public class Buttons {
     }
 
     public static InlineKeyboardMarkup inlineInnerMenuMarkup() {
-        MAIN_MENU_BUTTON.setCallbackData(MENU.getTextCommand());
+        MAIN_MENU_BUTTON.setCallbackData(MENU.getCommand());
 
         List<List<InlineKeyboardButton>> rows = List.of(List.of(MAIN_MENU_BUTTON));
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
@@ -58,6 +58,8 @@ public class Buttons {
             rows.add(List.of(productButton));
         }
 
+        MAIN_MENU_BUTTON.setCallbackData(MENU.getCommand());
+        rows.add(List.of(MAIN_MENU_BUTTON));
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         markupInline.setKeyboard(rows);
 

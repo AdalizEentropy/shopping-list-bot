@@ -3,24 +3,26 @@ package ru.adaliza.chatbot.command;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import ru.adaliza.chatbot.message.AbstractMessageService;
-import ru.adaliza.chatbot.service.UserService;
+import ru.adaliza.chatbot.button.Buttons;
+
+import java.io.Serializable;
 
 @Service("addCommand")
 @RequiredArgsConstructor
-public class AddCommandService extends AbstractMessageService implements BotCommandService {
+public class AddCommandService extends AbstractCommandService {
     public static final String FOR_ADDING = "Enter product name for adding";
-    private final UserService userService;
 
     @Override
-    public SendMessage createMessageForCommand(Long chatId) {
-        boolean updated = userService.updatePhase(chatId, BotCommand.ADD);
-        if (updated) {
-            return createTextWithKeyboardReplyMessage(chatId, FOR_ADDING);
-        } else {
-            return createTextWithKeyboardReplyMessage(chatId, ERROR_STATE);
-        }
+    public BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData) {
+        // TODO добавить ограничение на кол-во товаров
+        return createKeyboardReplyMessage(buttonData, FOR_ADDING);
+    }
+
+    @Override
+    protected InlineKeyboardMarkup getReplyMarkup() {
+        return Buttons.inlineInnerMenuMarkup();
     }
 }
