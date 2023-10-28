@@ -10,5 +10,7 @@ public interface ProductService {
 
     void removeAllProducts(Long userId);
 
+    void removeProductById(Long productId);
+
     void addProduct(Long chatId, String productName);
 }

@@ -32,7 +32,7 @@ public class TextMessageService extends AbstractTextMessageService
             productService.addProduct(chatId, text);
             //TODO узнать как можно изменить пришедшее сообщение, а не кнопки, и в идеале отвечать уведомлением
             return createTextReplyMessage(
-                    chatId, "Product was added\\. You can add one more or return to main menu");
+                    chatId, "Product '" + text + "' was added\\. You can add one more or return to main menu");
         } else {
             return replyUnknownMessage(chatId);
         }

@@ -21,12 +21,20 @@ public class RemoveCommandService extends AbstractCommandService {
 
     @Override
     public BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData) {
+        if (!buttonData.command().equals(BotCommand.REMOVE.getCommand())) {
+            removeProduct(buttonData.command());
+        }
+
         var text = "Choose product for removing";
         allShoppingList = productService.getAllProducts(buttonData.chatId());
         if (allShoppingList.isEmpty()) {
             text = "There are no products for removing";
         }
         return createKeyboardReplyMessage(buttonData, text);
+    }
+
+    private void removeProduct(String command) {
+        productService.removeProductById(Long.valueOf(command));
     }
 
     @Override
