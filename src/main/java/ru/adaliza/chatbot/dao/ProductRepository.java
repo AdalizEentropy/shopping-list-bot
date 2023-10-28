@@ -29,4 +29,10 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
             "insert into products (product_name, shopping_list_id) "
                     + "select :productName, id from shopping_lists where user_id = :userId")
     void addProductByUserId(Long userId, String productName);
+
+    @Query(
+            "select count(pr.id) from products pr "
+                    + "join shopping_lists sl on pr.shopping_list_id = sl.id "
+                    + "where sl.user_id = :userId")
+    int countByUserId(long userId);
 }

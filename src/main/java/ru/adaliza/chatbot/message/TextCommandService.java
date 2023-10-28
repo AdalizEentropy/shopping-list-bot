@@ -1,5 +1,7 @@
 package ru.adaliza.chatbot.message;
 
+import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWNV2;
+
 import static ru.adaliza.chatbot.command.BotCommand.START;
 
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 import ru.adaliza.chatbot.button.Buttons;
 import ru.adaliza.chatbot.service.UserService;
@@ -16,7 +19,7 @@ import ru.adaliza.chatbot.service.UserService;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TextCommandService extends AbstractTextMessageService implements MessageService<Message> {
+public class TextCommandService implements MessageService<Message> {
     private final UserService userService;
 
     @Override
@@ -30,7 +33,8 @@ public class TextCommandService extends AbstractTextMessageService implements Me
             log.info("New user with chatId {} was connected", chatId);
             return replyStartCommand(chatId, userName);
         } else {
-            return replyUnknownCommand(chatId);
+            log.warn("Inappropriate text command execution.");
+            return null;
         }
     }
 
@@ -39,8 +43,13 @@ public class TextCommandService extends AbstractTextMessageService implements Me
         return createReplyKeyboardMessage(chatId, text, Buttons.inlineMainMenuMarkup());
     }
 
-    private SendMessage replyUnknownCommand(Long chatId) {
-        String text = "Unknown command\\!";
-        return createTextReplyMessage(chatId, text);
+    private SendMessage createReplyKeyboardMessage(
+            Long chatId, String text, ReplyKeyboard keyboard) {
+        var chatIdStr = String.valueOf(chatId);
+        var sendMessage = new SendMessage(chatIdStr, text);
+        sendMessage.setReplyMarkup(keyboard);
+        sendMessage.setParseMode(MARKDOWNV2);
+
+        return sendMessage;
     }
 }

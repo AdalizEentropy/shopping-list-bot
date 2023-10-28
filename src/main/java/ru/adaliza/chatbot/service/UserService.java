@@ -12,4 +12,6 @@ public interface UserService {
     Optional<User> getUser(Long chatId);
 
     void updatePhase(Long chatId, BotCommand command);
+
+    void updateMainMessageId(Long chatId, Integer mainMessageId);
 }

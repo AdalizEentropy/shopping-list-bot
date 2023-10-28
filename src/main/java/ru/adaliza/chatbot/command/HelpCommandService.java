@@ -13,8 +13,22 @@ public class HelpCommandService extends AbstractCommandService {
 
     @Override
     public BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData) {
-        var text = "Here will be help";
-        return createKeyboardReplyMessage(buttonData, text);
+        StringBuilder builder = new StringBuilder();
+        builder.append("*Menu description:*");
+        builder.append("\n");
+        builder.append("🔹 *Show shopping list* \\- just show list of all your products\\.");
+        builder.append("\n");
+        builder.append(
+                "🔹 *Add product* \\- enter product name and quantity for adding it to your shopping list\\. ");
+        builder.append("You can enter products one by one without returning to main menu\\.");
+        builder.append("\n");
+        builder.append(
+                "🔹 *Remove product* \\- select which product you wan to remove from the shopping list\\. ");
+        builder.append("You can remove products one by one without returning to main menu\\.");
+        builder.append("\n");
+        builder.append("🔹 *Remove all* \\- remove all products from the shopping list\\.");
+
+        return createKeyboardReplyMessage(buttonData, builder.toString());
     }
 
     @Override

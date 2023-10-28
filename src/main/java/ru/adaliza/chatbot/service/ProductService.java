@@ -13,4 +13,6 @@ public interface ProductService {
     void removeProductById(Long productId);
 
     void addProduct(Long chatId, String productName);
+
+    int getProductQuantity(Long userId);
 }

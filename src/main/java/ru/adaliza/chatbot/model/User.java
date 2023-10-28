@@ -18,6 +18,7 @@ public class User implements Persistable<Long> {
     private final String username;
     @Transient private final boolean isNew;
     @Setter private BotCommand chatPhase;
+    @Setter private Integer mainMessageId;
 
     @MappedCollection(idColumn = "id")
     private ShoppingList shoppingList;

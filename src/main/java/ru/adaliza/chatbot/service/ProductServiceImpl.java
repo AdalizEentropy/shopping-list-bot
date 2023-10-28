@@ -33,4 +33,9 @@ public class ProductServiceImpl implements ProductService {
     public void addProduct(Long userId, String productName) {
         repository.addProductByUserId(userId, productName);
     }
+
+    @Override
+    public int getProductQuantity(Long userId) {
+        return repository.countByUserId(userId);
+    }
 }

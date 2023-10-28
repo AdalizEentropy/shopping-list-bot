@@ -24,7 +24,7 @@ import java.io.Serializable;
 @Component
 public class ShoppingListBot extends TelegramLongPollingBot {
     private final BotProperties properties;
-    private final MessageService<Message> textMessageService;
+    private final MessageService<Serializable> textMessageService;
     private final MessageService<Serializable> buttonService;
     private final MessageService<Message> textCommandService;
 
@@ -69,7 +69,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
         } else if (update.getMessage().hasText()) {
             setMdc(update.getMessage().getChatId());
             log.debug("Text message received: '{}'", update.getMessage().getText());
-            BotApiMethod<Message> replyMessage = textMessageService.replyOnMessage(update);
+            BotApiMethod<Serializable> replyMessage = textMessageService.replyOnMessage(update);
             deleteMessage(chatId, messageId);
             executeMessage(replyMessage);
         } else {

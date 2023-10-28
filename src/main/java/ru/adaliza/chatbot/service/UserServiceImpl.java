@@ -43,13 +43,23 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void updatePhase(Long chatId, BotCommand command) {
+        User user = findUser(chatId);
+        user.setChatPhase(command);
+        userRepository.save(user);
+    }
+
+    public void updateMainMessageId(Long chatId, Integer mainMessageId) {
+        User user = findUser(chatId);
+        user.setMainMessageId(mainMessageId);
+        userRepository.save(user);
+    }
+
+    private User findUser(Long chatId) {
         Optional<User> savedUsed = userRepository.findById(chatId);
         if (savedUsed.isPresent()) {
-            User user = savedUsed.get();
-            user.setChatPhase(command);
-            userRepository.save(user);
+            return savedUsed.get();
         } else {
-            log.warn("Inappropriate phase execution. Phase: {}", command);
+            log.warn("Inappropriate phase execution.");
             throw new IllegalPhaseException("Inappropriate phase execution");
         }
     }

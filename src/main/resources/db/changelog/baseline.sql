@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS users
 (
     id bigint NOT NULL PRIMARY KEY,
     username varchar(100) NOT NULL,
-    chat_phase varchar(10)
+    chat_phase varchar(10),
+    main_message_id bigint
 );
 
 CREATE TABLE IF NOT EXISTS shopping_lists
