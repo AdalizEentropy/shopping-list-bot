@@ -5,6 +5,7 @@ import static ru.adaliza.chatbot.command.BotCommand.START;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -37,6 +38,7 @@ public class TextCommandService implements MessageService<Message> {
     }
 
     private SendMessage replyStartCommand(Long chatId, String userName) {
+        userName = StringUtils.isEmpty(userName) ? "dear user" : userName;
         String text = String.format("Welcome to the shopping list bot, %s!", userName);
         return createReplyKeyboardMessage(chatId, text, Buttons.inlineMainMenuMarkup());
     }
