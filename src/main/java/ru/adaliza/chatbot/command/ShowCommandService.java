@@ -23,11 +23,11 @@ public class ShowCommandService extends AbstractCommandService {
         if (allShoppingList.isEmpty()) {
             builder.append("Your shopping list is empty");
         } else {
-            builder.append("*Your shopping list:*");
+            builder.append("<b>Your shopping list:</b>");
             builder.append("\n");
             allShoppingList.forEach(
                     product -> {
-                        builder.append("\\- ");
+                        builder.append("- ");
                         builder.append(product.name());
                         builder.append("\n");
                     });

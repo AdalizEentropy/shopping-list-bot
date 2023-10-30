@@ -1,6 +1,6 @@
 package ru.adaliza.chatbot.command;
 
-import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWNV2;
+import static org.telegram.telegrambots.meta.api.methods.ParseMode.HTML;
 
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -15,7 +15,7 @@ public abstract class AbstractCommandService implements BotCommandService {
         editMessage.setChatId(chatIdStr);
         editMessage.setMessageId(buttonData.messageId());
         editMessage.setText(text);
-        editMessage.setParseMode(MARKDOWNV2);
+        editMessage.setParseMode(HTML);
         editMessage.setReplyMarkup(getReplyMarkup());
 
         return editMessage;

@@ -14,19 +14,19 @@ public class HelpCommandService extends AbstractCommandService {
     @Override
     public BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData) {
         StringBuilder builder = new StringBuilder();
-        builder.append("*Menu description:*");
+        builder.append("<b>Menu description:</b>");
         builder.append("\n");
-        builder.append("🔹 *Show shopping list* \\- just show list of all your products\\.");
-        builder.append("\n");
-        builder.append(
-                "🔹 *Add product* \\- enter product name and quantity for adding it to your shopping list\\. ");
-        builder.append("You can enter products one by one without returning to main menu\\.");
+        builder.append("🔹 <b>Show shopping list</b> - just show list of all your products.");
         builder.append("\n");
         builder.append(
-                "🔹 *Remove product* \\- select which product you wan to remove from the shopping list\\. ");
-        builder.append("You can remove products one by one without returning to main menu\\.");
+                "🔹 <b>Add product</b> - enter product name and quantity for adding it to your shopping list. ");
+        builder.append("You can enter products one by one without returning to main menu.");
         builder.append("\n");
-        builder.append("🔹 *Remove all* \\- remove all products from the shopping list\\.");
+        builder.append(
+                "🔹 <b>Remove product</b> - select which product you wan to remove from the shopping list. ");
+        builder.append("You can remove products one by one without returning to main menu.");
+        builder.append("\n");
+        builder.append("🔹 <b>Remove all</b> - remove all products from the shopping list.");
 
         return createKeyboardReplyMessage(buttonData, builder.toString());
     }

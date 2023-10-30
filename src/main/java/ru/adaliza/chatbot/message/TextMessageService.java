@@ -1,7 +1,5 @@
 package ru.adaliza.chatbot.message;
 
-import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWNV2;
-
 import static ru.adaliza.chatbot.command.AddCommandService.ERROR_ADDING;
 import static ru.adaliza.chatbot.command.AddCommandService.FOR_ADDING;
 import static ru.adaliza.chatbot.command.BotCommand.ADD;
@@ -44,7 +42,7 @@ public class TextMessageService implements MessageService<Serializable> {
             } else {
                 String product = update.getMessage().getText();
                 productService.addProduct(chatId, product);
-                String text = String.format("Product '%s' was added\\. %s", product, FOR_ADDING);
+                String text = String.format("Product '%s' was added. %s", product, FOR_ADDING);
                 return createReplyKeyboardMessage(chatId, user.get().getMainMessageId(), text);
             }
 
@@ -61,7 +59,6 @@ public class TextMessageService implements MessageService<Serializable> {
         editMessage.setChatId(chatIdStr);
         editMessage.setMessageId(messageId);
         editMessage.setText(text);
-        editMessage.setParseMode(MARKDOWNV2);
         editMessage.setReplyMarkup(Buttons.inlineInnerMenuMarkup());
 
         return editMessage;

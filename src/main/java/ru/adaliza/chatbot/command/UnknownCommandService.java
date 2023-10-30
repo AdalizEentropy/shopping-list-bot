@@ -13,7 +13,7 @@ public class UnknownCommandService extends AbstractCommandService {
 
     @Override
     public BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData) {
-        var text = "Unknown command\\!";
+        var text = "Unknown command!";
         return createKeyboardReplyMessage(buttonData, text);
     }
 

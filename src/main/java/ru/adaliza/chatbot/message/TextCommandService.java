@@ -1,7 +1,5 @@
 package ru.adaliza.chatbot.message;
 
-import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWNV2;
-
 import static ru.adaliza.chatbot.command.BotCommand.START;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +37,7 @@ public class TextCommandService implements MessageService<Message> {
     }
 
     private SendMessage replyStartCommand(Long chatId, String userName) {
-        String text = String.format("Welcome to the shopping list bot, %s\\!", userName);
+        String text = String.format("Welcome to the shopping list bot, %s!", userName);
         return createReplyKeyboardMessage(chatId, text, Buttons.inlineMainMenuMarkup());
     }
 
@@ -48,7 +46,6 @@ public class TextCommandService implements MessageService<Message> {
         var chatIdStr = String.valueOf(chatId);
         var sendMessage = new SendMessage(chatIdStr, text);
         sendMessage.setReplyMarkup(keyboard);
-        sendMessage.setParseMode(MARKDOWNV2);
 
         return sendMessage;
     }

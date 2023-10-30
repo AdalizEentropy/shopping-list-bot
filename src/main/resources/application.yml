@@ -6,7 +6,7 @@ telegram:
 
 spring:
     datasource:
-        url: jdbc:postgresql://localhost:5430/shopping-list
+        url: jdbc:postgresql://${DB_ADDRESS}/${DB_SCHEME}
         driverClassName: org.postgresql.Driver
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
