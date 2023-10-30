@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "ru.adaliza"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -66,7 +66,7 @@ jib {
     container.creationTime.set("USE_CURRENT_TIMESTAMP")
     from.image = "bellsoft/liberica-openjdk-alpine-musl:17.0.2-9"
     to {
-        image = "chat-bot-image"
+        image = "adalizaentropy/chat-bot"
         tags = setOf(project.version.toString())
     }
 }
