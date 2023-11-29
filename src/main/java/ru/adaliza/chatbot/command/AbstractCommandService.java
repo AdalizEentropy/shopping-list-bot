@@ -9,11 +9,11 @@ public abstract class AbstractCommandService implements BotCommandService {
 
     protected abstract InlineKeyboardMarkup getReplyMarkup();
 
-    protected EditMessageText createKeyboardReplyMessage(ButtonData buttonData, String text) {
-        var chatIdStr = String.valueOf(buttonData.chatId());
+    protected EditMessageText createKeyboardReplyMessage(UpdateContext updateContext, String text) {
+        var chatIdStr = String.valueOf(updateContext.chatId());
         EditMessageText editMessage = new EditMessageText();
         editMessage.setChatId(chatIdStr);
-        editMessage.setMessageId(buttonData.messageId());
+        editMessage.setMessageId(updateContext.messageId());
         editMessage.setText(text);
         editMessage.setParseMode(HTML);
         editMessage.setReplyMarkup(getReplyMarkup());

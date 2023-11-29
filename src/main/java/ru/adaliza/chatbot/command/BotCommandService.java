@@ -6,5 +6,5 @@ import java.io.Serializable;
 
 public interface BotCommandService {
 
-    BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData);
+    BotApiMethod<Serializable> createMessageForCommand(UpdateContext updateContext);
 }

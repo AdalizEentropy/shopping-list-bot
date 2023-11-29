@@ -1,5 +1,7 @@
 package ru.adaliza.chatbot.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +22,10 @@ public class BotConfig {
         var api = new TelegramBotsApi(DefaultBotSession.class);
         api.registerBot(shoppingListBot);
         return api;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import ru.adaliza.chatbot.button.Buttons;
+import ru.adaliza.chatbot.language.LanguageConverter;
 import ru.adaliza.chatbot.model.Product;
 import ru.adaliza.chatbot.service.ProductService;
 
@@ -18,19 +19,20 @@ import java.util.List;
 public class RemoveCommandService extends AbstractCommandService {
     private final ProductService productService;
     private List<Product> allShoppingList;
+    private final LanguageConverter languageConverter;
 
     @Override
-    public BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData) {
-        if (!buttonData.command().equals(BotCommand.REMOVE.getCommand())) {
-            removeProduct(buttonData.command());
+    public BotApiMethod<Serializable> createMessageForCommand(UpdateContext updateContext) {
+        if (!updateContext.command().equals(BotCommand.REMOVE.getCommand())) {
+            removeProduct(updateContext.command());
         }
 
-        var text = "Choose product for removing";
-        allShoppingList = productService.getAllProducts(buttonData.chatId());
+        var text = languageConverter.getLanguageData(updateContext.user()).remove();
+        allShoppingList = productService.getAllProducts(updateContext.chatId());
         if (allShoppingList.isEmpty()) {
-            text = "There are no products for removing";
+            text = languageConverter.getLanguageData(updateContext.user()).emptyRemove();
         }
-        return createKeyboardReplyMessage(buttonData, text);
+        return createKeyboardReplyMessage(updateContext, text);
     }
 
     private void removeProduct(String command) {

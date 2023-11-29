@@ -12,9 +12,9 @@ import java.io.Serializable;
 public class UnknownCommandService extends AbstractCommandService {
 
     @Override
-    public BotApiMethod<Serializable> createMessageForCommand(ButtonData buttonData) {
+    public BotApiMethod<Serializable> createMessageForCommand(UpdateContext updateContext) {
         var text = "Unknown command!";
-        return createKeyboardReplyMessage(buttonData, text);
+        return createKeyboardReplyMessage(updateContext, text);
     }
 
     @Override

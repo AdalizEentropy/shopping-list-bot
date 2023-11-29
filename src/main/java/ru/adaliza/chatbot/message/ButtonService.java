@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ru.adaliza.chatbot.command.BotCommand;
 import ru.adaliza.chatbot.command.BotCommandService;
-import ru.adaliza.chatbot.command.ButtonData;
+import ru.adaliza.chatbot.command.UpdateContext;
 import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.service.UserService;
 
@@ -28,10 +28,11 @@ public class ButtonService implements MessageService<Serializable> {
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String command = update.getCallbackQuery().getData();
         BotCommand botCommand = BotCommand.valueOfCommand(command);
-        ButtonData buttonData = new ButtonData(chatId, messageId, command);
+        UpdateContext updateContext =
+                new UpdateContext(chatId, messageId, command, update.getCallbackQuery().getFrom());
 
         if (botCommand == BotCommand.UNKNOWN) {
-            return executeMayBeProductButton(buttonData);
+            return executeMayBeProductButton(updateContext);
         } else {
             userService.updatePhase(chatId, botCommand);
         }
@@ -39,30 +40,30 @@ public class ButtonService implements MessageService<Serializable> {
         BotApiMethod<Serializable> replyMessage;
         switch (botCommand) {
             case ADD -> replyMessage =
-                    commands.get("addCommand").createMessageForCommand(buttonData);
+                    commands.get("addCommand").createMessageForCommand(updateContext);
             case CLEAR -> replyMessage =
-                    commands.get("clearCommand").createMessageForCommand(buttonData);
+                    commands.get("clearCommand").createMessageForCommand(updateContext);
             case REMOVE -> replyMessage =
-                    commands.get("removeCommand").createMessageForCommand(buttonData);
+                    commands.get("removeCommand").createMessageForCommand(updateContext);
             case SHOW -> replyMessage =
-                    commands.get("showCommand").createMessageForCommand(buttonData);
+                    commands.get("showCommand").createMessageForCommand(updateContext);
             case HELP -> replyMessage =
-                    commands.get("helpCommand").createMessageForCommand(buttonData);
+                    commands.get("helpCommand").createMessageForCommand(updateContext);
             case MENU -> replyMessage =
-                    commands.get("menuCommand").createMessageForCommand(buttonData);
+                    commands.get("menuCommand").createMessageForCommand(updateContext);
             default -> replyMessage =
-                    commands.get("unknownCommand").createMessageForCommand(buttonData);
+                    commands.get("unknownCommand").createMessageForCommand(updateContext);
         }
 
         return replyMessage;
     }
 
-    private BotApiMethod<Serializable> executeMayBeProductButton(ButtonData buttonData) {
-        Optional<User> user = userService.getUser(buttonData.chatId());
+    private BotApiMethod<Serializable> executeMayBeProductButton(UpdateContext updateContext) {
+        Optional<User> user = userService.getUser(updateContext.chatId());
         if (user.isPresent() && user.get().getChatPhase() == BotCommand.REMOVE) {
-            return commands.get("removeCommand").createMessageForCommand(buttonData);
+            return commands.get("removeCommand").createMessageForCommand(updateContext);
         } else {
-            return commands.get("unknownCommand").createMessageForCommand(buttonData);
+            return commands.get("unknownCommand").createMessageForCommand(updateContext);
         }
     }
 }

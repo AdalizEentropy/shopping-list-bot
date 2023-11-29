@@ -1,7 +1,6 @@
 package ru.adaliza.chatbot.message;
 
 import static ru.adaliza.chatbot.command.AddCommandService.ERROR_ADDING;
-import static ru.adaliza.chatbot.command.AddCommandService.FOR_ADDING;
 import static ru.adaliza.chatbot.command.BotCommand.ADD;
 
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ru.adaliza.chatbot.button.Buttons;
+import ru.adaliza.chatbot.language.LanguageConverter;
 import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.property.BotProperties;
 import ru.adaliza.chatbot.service.ProductService;
@@ -28,6 +28,7 @@ public class TextMessageService implements MessageService<Serializable> {
     private final UserService userService;
     private final ProductService productService;
     private final BotProperties properties;
+    private final LanguageConverter languageConverter;
 
     @Override
     public BotApiMethod<Serializable> replyOnMessage(Update update) {
@@ -42,7 +43,12 @@ public class TextMessageService implements MessageService<Serializable> {
             } else {
                 String product = update.getMessage().getText();
                 productService.addProduct(chatId, product);
-                String text = String.format("Product '%s' was added. %s", product, FOR_ADDING);
+                String text =
+                        String.format(
+                                languageConverter
+                                        .getLanguageData(update.getMessage().getFrom())
+                                        .added(),
+                                product);
                 return createReplyKeyboardMessage(chatId, user.get().getMainMessageId(), text);
             }
 
