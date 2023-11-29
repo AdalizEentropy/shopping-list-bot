@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import ru.adaliza.chatbot.button.Buttons;
+import ru.adaliza.chatbot.button.InlineKeyboardInitializer;
 import ru.adaliza.chatbot.language.LanguageConverter;
 import ru.adaliza.chatbot.model.Product;
 import ru.adaliza.chatbot.service.ProductService;
@@ -20,6 +20,7 @@ public class RemoveCommandService extends AbstractCommandService {
     private final ProductService productService;
     private List<Product> allShoppingList;
     private final LanguageConverter languageConverter;
+    private final InlineKeyboardInitializer keyboardInitializer;
 
     @Override
     public BotApiMethod<Serializable> createMessageForCommand(UpdateContext updateContext) {
@@ -41,6 +42,6 @@ public class RemoveCommandService extends AbstractCommandService {
 
     @Override
     protected InlineKeyboardMarkup getReplyMarkup() {
-        return Buttons.inlineProductsMarkup(allShoppingList);
+        return keyboardInitializer.inlineProductsMarkup(allShoppingList);
     }
 }

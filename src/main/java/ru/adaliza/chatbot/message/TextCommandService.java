@@ -12,8 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-import ru.adaliza.chatbot.button.Buttons;
+import ru.adaliza.chatbot.button.InlineKeyboardInitializer;
 import ru.adaliza.chatbot.language.LanguageConverter;
+import ru.adaliza.chatbot.language.LanguageData;
 import ru.adaliza.chatbot.service.UserService;
 
 @Slf4j
@@ -22,6 +23,7 @@ import ru.adaliza.chatbot.service.UserService;
 public class TextCommandService implements MessageService<Message> {
     private final UserService userService;
     private final LanguageConverter languageConverter;
+    private final InlineKeyboardInitializer keyboardInitializer;
 
     @Override
     public SendMessage replyOnMessage(Update update) {
@@ -40,13 +42,15 @@ public class TextCommandService implements MessageService<Message> {
     }
 
     private SendMessage replyStartCommand(Long chatId, String userName, Update update) {
-        String convertedText =
-                languageConverter.getLanguageData(update.getMessage().getFrom()).welcome();
+        LanguageData languageData =
+                languageConverter.getLanguageData(update.getMessage().getFrom());
+        String convertedText = languageData.welcome();
         String text =
                 StringUtils.isEmpty(userName)
                         ? String.format("%s!", convertedText)
                         : String.format("%s, %s!", convertedText, userName);
-        return createReplyKeyboardMessage(chatId, text, Buttons.inlineMainMenuMarkup());
+        return createReplyKeyboardMessage(
+                chatId, text, keyboardInitializer.inlineMainMenuMarkup(languageData));
     }
 
     private SendMessage createReplyKeyboardMessage(

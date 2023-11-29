@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import ru.adaliza.chatbot.button.Buttons;
+import ru.adaliza.chatbot.button.InlineKeyboardInitializer;
 import ru.adaliza.chatbot.language.LanguageConverter;
+import ru.adaliza.chatbot.language.LanguageData;
 
 import java.io.Serializable;
 
@@ -15,16 +16,17 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 public class MenuCommandService extends AbstractCommandService {
     private final LanguageConverter languageConverter;
+    private final InlineKeyboardInitializer keyboardInitializer;
+    private LanguageData languageData;
 
     @Override
     public BotApiMethod<Serializable> createMessageForCommand(UpdateContext updateContext) {
-        return createKeyboardReplyMessage(
-                updateContext,
-                languageConverter.getLanguageData(updateContext.user()).selectCommand());
+        languageData = languageConverter.getLanguageData(updateContext.user());
+        return createKeyboardReplyMessage(updateContext, languageData.selectCommand());
     }
 
     @Override
     protected InlineKeyboardMarkup getReplyMarkup() {
-        return Buttons.inlineMainMenuMarkup();
+        return keyboardInitializer.inlineMainMenuMarkup(languageData);
     }
 }

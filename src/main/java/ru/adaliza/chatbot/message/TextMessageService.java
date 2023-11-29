@@ -1,6 +1,5 @@
 package ru.adaliza.chatbot.message;
 
-import static ru.adaliza.chatbot.command.AddCommandService.ERROR_ADDING;
 import static ru.adaliza.chatbot.command.BotCommand.ADD;
 
 import lombok.RequiredArgsConstructor;
@@ -11,8 +10,9 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import ru.adaliza.chatbot.button.Buttons;
+import ru.adaliza.chatbot.button.InlineKeyboardInitializer;
 import ru.adaliza.chatbot.language.LanguageConverter;
+import ru.adaliza.chatbot.language.LanguageData;
 import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.property.BotProperties;
 import ru.adaliza.chatbot.service.ProductService;
@@ -29,6 +29,7 @@ public class TextMessageService implements MessageService<Serializable> {
     private final ProductService productService;
     private final BotProperties properties;
     private final LanguageConverter languageConverter;
+    private final InlineKeyboardInitializer keyboardInitializer;
 
     @Override
     public BotApiMethod<Serializable> replyOnMessage(Update update) {
@@ -37,19 +38,20 @@ public class TextMessageService implements MessageService<Serializable> {
 
         if (user.isPresent() && user.get().getChatPhase() == ADD) {
             int productQuantity = productService.getProductQuantity(chatId);
+            LanguageData languageData =
+                    languageConverter.getLanguageData(update.getMessage().getFrom());
             if (productQuantity >= properties.getMaxProductQuantity()) {
                 return createReplyKeyboardMessage(
-                        chatId, user.get().getMainMessageId(), ERROR_ADDING);
+                        chatId,
+                        user.get().getMainMessageId(),
+                        languageData.errorAdding(),
+                        languageData);
             } else {
                 String product = update.getMessage().getText();
                 productService.addProduct(chatId, product);
-                String text =
-                        String.format(
-                                languageConverter
-                                        .getLanguageData(update.getMessage().getFrom())
-                                        .added(),
-                                product);
-                return createReplyKeyboardMessage(chatId, user.get().getMainMessageId(), text);
+                String text = String.format(languageData.added(), product);
+                return createReplyKeyboardMessage(
+                        chatId, user.get().getMainMessageId(), text, languageData);
             }
 
         } else {
@@ -59,13 +61,13 @@ public class TextMessageService implements MessageService<Serializable> {
     }
 
     protected EditMessageText createReplyKeyboardMessage(
-            Long chatId, Integer messageId, String text) {
+            Long chatId, Integer messageId, String text, LanguageData languageData) {
         var chatIdStr = String.valueOf(chatId);
         EditMessageText editMessage = new EditMessageText();
         editMessage.setChatId(chatIdStr);
         editMessage.setMessageId(messageId);
         editMessage.setText(text);
-        editMessage.setReplyMarkup(Buttons.inlineInnerMenuMarkup());
+        editMessage.setReplyMarkup(keyboardInitializer.inlineInnerMenuMarkup(languageData));
 
         return editMessage;
     }

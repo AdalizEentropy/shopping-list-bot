@@ -11,4 +11,6 @@ public record LanguageData(
         String remove,
         String emptyRemove,
         String removeAll,
-        String help) {}
+        String help,
+        String unknown,
+        String errorAdding) {}

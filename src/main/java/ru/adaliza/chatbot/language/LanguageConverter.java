@@ -21,6 +21,7 @@ public class LanguageConverter {
     private Language language;
 
     public void readFile() {
+        // TODO убрать в yml
         File file = new File("src/main/resources/text-in-languages.json");
 
         try {
@@ -40,7 +41,7 @@ public class LanguageConverter {
         }
     }
 
-    private LanguageCode getLanguageCode(User user) {
+    public LanguageCode getLanguageCode(User user) {
         String languageCode = user.getLanguageCode();
         if (LanguageCode.valueOfCode(languageCode) == LanguageCode.RU) {
             return LanguageCode.RU;
