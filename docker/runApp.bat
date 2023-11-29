@@ -7,4 +7,4 @@ docker run --rm --name chat-bot ^
 -e telegram.bot.token=%BOT_TOKEN% ^
 -e DB_ADDRESS=localhost:5430 ^
 -e DB_SCHEME=shopping-list ^
-adalizaentropy/chat-bot:0.0.1
+adalizaentropy/chat-bot:1.0.0

@@ -13,4 +13,5 @@ public class BotProperties {
     private final String username;
     private final String token;
     private final Integer maxProductQuantity;
+    private final String languagesFile;
 }

@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "ru.adaliza"
-version = "0.0.3"
+version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

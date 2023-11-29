@@ -3,6 +3,7 @@ telegram:
         username: ${BOT_NAME}
         token: ${BOT_TOKEN}
         max_product_quantity: 30
+        languages_file: src/main/resources/text-in-languages.json
 
 spring:
     datasource:

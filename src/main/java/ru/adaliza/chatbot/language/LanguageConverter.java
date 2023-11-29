@@ -6,9 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
-
 import org.telegram.telegrambots.meta.api.objects.User;
+
 import ru.adaliza.chatbot.exception.ReadFileException;
+import ru.adaliza.chatbot.property.BotProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,11 +19,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LanguageConverter {
     private final ObjectMapper objectMapper;
+    private final BotProperties botProperties;
     private Language language;
 
     public void readFile() {
-        // TODO убрать в yml
-        File file = new File("src/main/resources/text-in-languages.json");
+        File file = new File(botProperties.getLanguagesFile());
 
         try {
             language = objectMapper.readValue(file, Language.class);

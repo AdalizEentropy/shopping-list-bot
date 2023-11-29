@@ -71,7 +71,7 @@ public class InlineKeyboardInitializer {
         showButton.setText("🛒 " + languageData.buttons().show());
         addButton.setText("➕ " + languageData.buttons().add());
         removeButton.setText("➖ " + languageData.buttons().remove());
-        clearButton.setText("❌ " + languageData.buttons().remove());
+        clearButton.setText("❌ " + languageData.buttons().clear());
         helpButton.setText("❔ " + languageData.buttons().help());
         mainMenuButton.setText("🔙 " + languageData.buttons().menu());
     }
