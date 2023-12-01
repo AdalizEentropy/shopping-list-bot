@@ -1,4 +1,4 @@
-rootProject.name = "chat-bot"
+rootProject.name = "shopping-list-bot"
 
 pluginManagement {
     repositories {
