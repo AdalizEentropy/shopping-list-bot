@@ -96,9 +96,11 @@ public class ShoppingListBot extends TelegramLongPollingBot {
 
     private void executeMessage(BotApiMethod<? extends Serializable> replyMessage) {
         try {
-            execute(replyMessage);
+            if (replyMessage != null) {
+                execute(replyMessage);
+            }
         } catch (TelegramApiException e) {
-            log.error("Error to send message", e);
+            log.error("Error to send message: {}", e.getMessage());
         }
     }
 

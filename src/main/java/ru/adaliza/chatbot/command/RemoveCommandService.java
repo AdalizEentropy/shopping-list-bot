@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import ru.adaliza.chatbot.button.InlineKeyboardInitializer;
-import ru.adaliza.chatbot.language.LanguageConverter;
 import ru.adaliza.chatbot.model.Product;
 import ru.adaliza.chatbot.service.ProductService;
 
@@ -19,7 +18,6 @@ import java.util.List;
 public class RemoveCommandService extends AbstractCommandService {
     private final ProductService productService;
     private List<Product> allShoppingList;
-    private final LanguageConverter languageConverter;
     private final InlineKeyboardInitializer keyboardInitializer;
 
     @Override
@@ -28,10 +26,10 @@ public class RemoveCommandService extends AbstractCommandService {
             removeProduct(updateContext.command());
         }
 
-        var text = languageConverter.getLanguageData(updateContext.user()).remove();
+        var text = updateContext.languageData().remove();
         allShoppingList = productService.getAllProducts(updateContext.chatId());
         if (allShoppingList.isEmpty()) {
-            text = languageConverter.getLanguageData(updateContext.user()).emptyRemove();
+            text = updateContext.languageData().emptyRemove();
         }
         return createKeyboardReplyMessage(updateContext, text);
     }

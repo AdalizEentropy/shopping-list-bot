@@ -11,7 +11,7 @@ import java.util.List;
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
     @Query(
-            "select * from products pr "
+            "select pr.* from products pr "
                     + "join shopping_lists sl on pr.shopping_list_id = sl.id "
                     + "where sl.user_id = :userId "
                     + "order by pr.product_name")

@@ -1,5 +1,5 @@
 package ru.adaliza.chatbot.command;
 
-import org.telegram.telegrambots.meta.api.objects.User;
+import ru.adaliza.chatbot.language.LanguageData;
 
-public record UpdateContext(Long chatId, Integer messageId, String command, User user) {}
+public record UpdateContext(Long chatId, Integer messageId, String command, LanguageData languageData) {}

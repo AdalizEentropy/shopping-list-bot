@@ -9,6 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.adaliza.chatbot.command.BotCommand;
 import ru.adaliza.chatbot.command.BotCommandService;
 import ru.adaliza.chatbot.command.UpdateContext;
+import ru.adaliza.chatbot.language.LanguageConverter;
+import ru.adaliza.chatbot.language.LanguageData;
 import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.service.UserService;
 
@@ -21,15 +23,17 @@ import java.util.Optional;
 public class ButtonService implements MessageService<Serializable> {
     private final Map<String, BotCommandService> commands;
     private final UserService userService;
+    private final LanguageConverter languageConverter;
 
     @Override
     public BotApiMethod<Serializable> replyOnMessage(Update update) {
         Long chatId = update.getCallbackQuery().getMessage().getChatId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String command = update.getCallbackQuery().getData();
+        LanguageData languageData = languageConverter.getLanguageData(update.getCallbackQuery().getFrom());
         BotCommand botCommand = BotCommand.valueOfCommand(command);
         UpdateContext updateContext =
-                new UpdateContext(chatId, messageId, command, update.getCallbackQuery().getFrom());
+                new UpdateContext(chatId, messageId, command, languageData);
 
         if (botCommand == BotCommand.UNKNOWN) {
             return executeMayBeProductButton(updateContext);
