@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import ru.adaliza.chatbot.button.InlineKeyboardInitializer;
+import ru.adaliza.chatbot.command.model.UpdateContext;
+import ru.adaliza.chatbot.keyboard.InlineKeyboardInitializer;
 import ru.adaliza.chatbot.model.Product;
 import ru.adaliza.chatbot.service.ProductService;
 

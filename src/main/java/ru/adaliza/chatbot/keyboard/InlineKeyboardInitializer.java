@@ -1,4 +1,4 @@
-package ru.adaliza.chatbot.button;
+package ru.adaliza.chatbot.keyboard;
 
 import static ru.adaliza.chatbot.command.BotCommand.*;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import ru.adaliza.chatbot.language.LanguageData;
+import ru.adaliza.chatbot.language.model.LanguageData;
 import ru.adaliza.chatbot.model.Product;
 
 import java.util.ArrayList;

@@ -12,9 +12,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-import ru.adaliza.chatbot.button.InlineKeyboardInitializer;
+import ru.adaliza.chatbot.keyboard.InlineKeyboardInitializer;
+import ru.adaliza.chatbot.language.BaseLanguageConverter;
 import ru.adaliza.chatbot.language.LanguageConverter;
-import ru.adaliza.chatbot.language.LanguageData;
+import ru.adaliza.chatbot.language.model.LanguageData;
 import ru.adaliza.chatbot.service.UserService;
 
 @Slf4j

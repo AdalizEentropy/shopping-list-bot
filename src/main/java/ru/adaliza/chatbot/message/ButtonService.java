@@ -8,9 +8,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ru.adaliza.chatbot.command.BotCommand;
 import ru.adaliza.chatbot.command.BotCommandService;
-import ru.adaliza.chatbot.command.UpdateContext;
+import ru.adaliza.chatbot.command.model.UpdateContext;
 import ru.adaliza.chatbot.language.LanguageConverter;
-import ru.adaliza.chatbot.language.LanguageData;
+import ru.adaliza.chatbot.language.model.LanguageData;
 import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.service.UserService;
 

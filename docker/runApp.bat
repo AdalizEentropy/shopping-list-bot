@@ -1,4 +1,4 @@
-docker run --rm --name chat-bot ^
+docker run --rm --name shopping-list-bot ^
 --network="host" ^
 -p 8080:8080 ^
 -e spring.datasource.username=%DB_USERNAME% ^
@@ -7,4 +7,4 @@ docker run --rm --name chat-bot ^
 -e telegram.bot.token=%BOT_TOKEN% ^
 -e DB_ADDRESS=localhost:5430 ^
 -e DB_SCHEME=shopping-list ^
-adalizaentropy/chat-bot:1.0.0
+adalizaentropy/shopping-list-bot:1.0.0

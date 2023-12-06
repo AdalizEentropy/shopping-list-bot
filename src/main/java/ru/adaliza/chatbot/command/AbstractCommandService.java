@@ -4,6 +4,7 @@ import static org.telegram.telegrambots.meta.api.methods.ParseMode.HTML;
 
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import ru.adaliza.chatbot.command.model.UpdateContext;
 
 public abstract class AbstractCommandService implements BotCommandService {
 

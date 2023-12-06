@@ -1,4 +1,4 @@
-package ru.adaliza.chatbot.language;
+package ru.adaliza.chatbot.language.model;
 
 public record LanguageData(
         ButtonNames buttons,
