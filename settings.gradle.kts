@@ -1,4 +1,6 @@
 rootProject.name = "shopping-list-bot"
+include("chatbot")
+include("ai-client")
 
 pluginManagement {
     repositories {
