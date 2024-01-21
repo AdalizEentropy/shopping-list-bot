@@ -17,3 +17,6 @@ one without returning to main menu. <br>
 🔹 Remove products - select which product you want to remove from the shopping list. You can remove products one by one 
 without returning to main menu. <br>
 🔹 Remove all products - remove all products from the shopping list.
+
+
+[![wakatime](https://wakatime.com/badge/user/c23d0691-da7f-4c61-8aea-a3766d6fba39/project/018c2749-3733-41d0-9702-d69a2a4abbf5.svg?style=social)](https://wakatime.com/badge/user/c23d0691-da7f-4c61-8aea-a3766d6fba39/project/018c2749-3733-41d0-9702-d69a2a4abbf5)
