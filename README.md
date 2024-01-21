@@ -5,7 +5,7 @@
 ![](https://img.shields.io/badge/build_automation_tool-Gradle-red)
 ![](https://img.shields.io/badge/framework-Spring_boot-green)
 
-It is your pocket shop assistant
+[It is your pocket shop assistant](https://t.me/AdalizaBot)
 ___
 
 ### Description

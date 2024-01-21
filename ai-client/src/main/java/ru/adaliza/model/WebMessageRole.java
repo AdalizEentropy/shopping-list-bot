@@ -1,4 +1,4 @@
-package ru.adaliza.module;
+package ru.adaliza.model;
 
 public enum WebMessageRole {
     SYSTEM("system"),

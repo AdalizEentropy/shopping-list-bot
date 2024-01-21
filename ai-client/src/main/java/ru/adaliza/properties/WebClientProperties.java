@@ -9,4 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("ai-client")
 public class WebClientProperties {
     private final String baseUrl;
+    private final String tokenUrl;
+    private final String clientId;
+    private final String clientSecret;
+    private final String scope;
 }

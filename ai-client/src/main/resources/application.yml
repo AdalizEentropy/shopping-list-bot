@@ -1,17 +1,9 @@
+server:
+    port: 9090
+
 ai-client:
     base-url: https://gigachat.devices.sberbank.ru/api/v1
-
-spring:
-    security:
-        oauth2:
-            client:
-                registration:
-                    messaging-client-client-credentials:
-                        provider: spring
-                        client-id: ${SBER_CLIENT_ID}
-                        client-secret: ${SBER_CLIENT_SECRET}
-                        authorization-grant-type: client_credentials
-                        scope: GIGACHAT_API_PERS
-                provider:
-                    spring:
-                        token-uri: https://ngw.devices.sberbank.ru:9443/api/v2/oauth
+    token-url: https://ngw.devices.sberbank.ru:9443/api/v2/oauth
+    client-id: ${SBER_CLIENT_ID}
+    client-secret: ${SBER_CLIENT_SECRET}
+    scope: GIGACHAT_API_PERS
