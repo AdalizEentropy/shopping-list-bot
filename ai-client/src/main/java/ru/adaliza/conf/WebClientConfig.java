@@ -30,8 +30,12 @@ public class WebClientConfig {
                         + Base64.getEncoder()
                                 .encodeToString(authData.getBytes(Charset.defaultCharset()));
         return WebClient.builder()
-                .baseUrl(webClientProperties.getTokenUrl())
+                //                .baseUrl(webClientProperties.getTokenUrl())
+                .baseUrl("http://127.0.0.1:8080/api/v1")
                 .defaultHeader(HttpHeaders.AUTHORIZATION, authHeader)
+                .defaultHeader(HttpHeaders.ACCEPT, "*/*")
+                .defaultHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate, br")
+                .defaultHeader(HttpHeaders.CONNECTION, "keep-alive")
                 .clientConnector(new ReactorClientHttpConnector(createClient()))
                 .build();
     }
@@ -40,6 +44,9 @@ public class WebClientConfig {
     public WebClient baseWebClient() throws SSLException {
         return WebClient.builder()
                 .baseUrl(webClientProperties.getBaseUrl())
+                .defaultHeader(HttpHeaders.ACCEPT, "*/*")
+                .defaultHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate, br")
+                .defaultHeader(HttpHeaders.CONNECTION, "keep-alive")
                 .clientConnector(new ReactorClientHttpConnector(createClient()))
                 .build();
     }

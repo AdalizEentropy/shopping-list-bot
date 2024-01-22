@@ -2,6 +2,8 @@ package ru.adaliza.model;
 
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * "model": идентификатор модели, можно указать конкретную или :latest
@@ -25,6 +27,8 @@ import lombok.Getter;
  * станции" } ]
  */
 @Getter
+@Setter
+@ToString
 public class WebRequest {
     private final String model;
     private final double temperature;

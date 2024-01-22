@@ -1,9 +1,11 @@
 package ru.adaliza.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class WebMessage {
     private WebMessageRole role;

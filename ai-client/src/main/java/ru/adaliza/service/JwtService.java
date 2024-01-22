@@ -2,6 +2,7 @@ package ru.adaliza.service;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
+import java.time.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import ru.adaliza.model.JwtToken;
 import ru.adaliza.properties.WebClientProperties;
 
@@ -25,15 +25,17 @@ public class JwtService {
         this.properties = properties;
     }
 
-    public Flux<JwtToken> getAccessToken() {
+    public JwtToken getAccessToken() {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("scope", properties.getScope());
 
+        // TODO проверять срок действия токена в хранилище
         return webClient
                 .post()
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.ALL)
                 .bodyValue(formData)
-                .exchangeToFlux(clientResponse -> clientResponse.bodyToFlux(JwtToken.class));
+                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(JwtToken.class))
+                .block(Duration.ofSeconds(2));
     }
 }

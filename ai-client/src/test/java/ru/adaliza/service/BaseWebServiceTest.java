@@ -15,6 +15,6 @@ class BaseWebServiceTest {
     void test() {
         Flux<String> tomat = webService.getProductCategory("tomat");
         String s = tomat.blockFirst();
-        System.out.println(s);
+        System.out.println("Result :" + s);
     }
 }
