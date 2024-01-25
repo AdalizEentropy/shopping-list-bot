@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.adaliza.service.WebService;
 
 @RestController
@@ -15,7 +15,7 @@ public class AIClientController {
     private final WebService webService;
 
     @GetMapping("/category/{product}")
-    public Flux<String> getProductCategory(@PathVariable String product) {
+    public Mono<String> getProductCategory(@PathVariable String product) {
 
         return webService.getProductCategory(product);
     }

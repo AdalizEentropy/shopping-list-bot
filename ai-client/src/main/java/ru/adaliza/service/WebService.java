@@ -1,8 +1,8 @@
 package ru.adaliza.service;
 
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface WebService {
 
-    Flux<String> getProductCategory(String product);
+    Mono<String> getProductCategory(String product);
 }

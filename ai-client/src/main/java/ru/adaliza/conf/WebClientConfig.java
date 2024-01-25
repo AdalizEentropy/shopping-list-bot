@@ -2,8 +2,10 @@ package ru.adaliza.conf;
 
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import java.nio.charset.Charset;
 import java.util.Base64;
+import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -56,6 +58,15 @@ public class WebClientConfig {
                 SslContextBuilder.forClient()
                         .trustManager(InsecureTrustManagerFactory.INSTANCE)
                         .build();
-        return HttpClient.create().secure(t -> t.sslContext(sslContext));
+        return HttpClient.create()
+                .secure(t -> t.sslContext(sslContext))
+                .doOnConnected(
+                        connection ->
+                                connection.addHandlerLast(
+                                        new ReadTimeoutHandler(
+                                                webClientProperties
+                                                        .getResponseTimeout()
+                                                        .toSeconds(),
+                                                TimeUnit.SECONDS)));
     }
 }

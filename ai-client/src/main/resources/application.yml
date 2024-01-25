@@ -7,3 +7,4 @@ ai-client:
     client-id: ${SBER_CLIENT_ID}
     client-secret: ${SBER_CLIENT_SECRET}
     scope: GIGACHAT_API_PERS
+    response-timeout: PT5S

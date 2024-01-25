@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import ru.adaliza.exception.WebRequestException;
 import ru.adaliza.model.*;
 
 @Slf4j
@@ -27,27 +28,46 @@ public class BaseWebService implements WebService {
         return new WebMessage(WebMessageRole.SYSTEM, "Называй только продовольственные категории");
     }
 
-    public Flux<String> getProductCategory(String product) {
+    public Mono<String> getProductCategory(String product) {
         String requestId = String.valueOf(randomUUID());
         log.debug("Get product category: reqId={}, product={}", requestId, product);
-        JwtToken jwtToken = jwtService.getAccessToken();
+        try {
+            JwtToken jwtToken = jwtService.getAccessToken();
+            return makeRequest(jwtToken.getAccessToken(), requestId, product);
+        } catch (WebRequestException ex) {
+            log.error(ex.getMessage());
+            return Mono.just("прочее");
+        }
+    }
 
+    private Mono<String> makeRequest(String accessToken, String requestId, String product) {
         return webClient
                 .post()
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.ALL)
                 .header("X-Request-ID", requestId)
-                .header(AUTHORIZATION, "Bearer " + jwtToken.accessToken())
+                .header(AUTHORIZATION, "Bearer " + accessToken)
                 .bodyValue(
                         new WebRequest(
                                 List.of(
                                         createProductCategorySysMessage(),
                                         new WebMessage(WebMessageRole.USER, product))))
-                .exchangeToFlux(
-                        clientResponse ->
-                                clientResponse
-                                        .bodyToFlux(WebResponse.class)
-                                        .map(this::mapResponseToCategory));
+                .retrieve()
+                .onStatus(
+                        HttpStatusCode::isError,
+                        error ->
+                                Mono.error(
+                                        new WebRequestException(
+                                                "Product category request error. Status: "
+                                                        + error.statusCode())))
+                .bodyToMono(WebResponse.class)
+                .map(this::mapResponseToCategory)
+                .onErrorResume(
+                        error ->
+                                Mono.error(
+                                        new WebRequestException(
+                                                "Product category request error. "
+                                                        + error.getMessage())));
     }
 
     private String mapResponseToCategory(WebResponse response) {

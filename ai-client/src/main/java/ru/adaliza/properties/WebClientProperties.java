@@ -1,5 +1,6 @@
 package ru.adaliza.properties;
 
+import java.time.Duration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,4 +14,5 @@ public class WebClientProperties {
     private final String clientId;
     private final String clientSecret;
     private final String scope;
+    private final Duration responseTimeout;
 }

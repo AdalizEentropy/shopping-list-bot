@@ -1,5 +1,6 @@
 package ru.adaliza.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,11 +34,17 @@ public class WebRequest {
     private final String model;
     private final double temperature;
     private final int n;
-    private final int maxTokens;
-    private final double repetitionPenalty;
     private final boolean stream;
-    private final int updateInterval;
     private final List<WebMessage> messages;
+
+    @JsonProperty("max_tokens")
+    private final int maxTokens;
+
+    @JsonProperty("repetition_penalty")
+    private final double repetitionPenalty;
+
+    @JsonProperty("update_interval")
+    private final int updateInterval;
 
     public WebRequest(List<WebMessage> messages) {
         this.model = "GigaChat:latest";
