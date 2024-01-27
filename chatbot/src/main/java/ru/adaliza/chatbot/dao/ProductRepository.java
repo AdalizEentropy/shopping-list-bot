@@ -12,7 +12,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
             "select pr.* from products pr "
                     + "join shopping_lists sl on pr.shopping_list_id = sl.id "
                     + "where sl.user_id = :userId "
-                    + "order by pr.product_name")
+                    + "order by pr.category, pr.product_name")
     List<Product> findAllByUserId(long userId);
 
     @Modifying

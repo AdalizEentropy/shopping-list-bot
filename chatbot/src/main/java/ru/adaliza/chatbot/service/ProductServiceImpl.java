@@ -1,8 +1,10 @@
 package ru.adaliza.chatbot.service;
 
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -54,7 +56,10 @@ public class ProductServiceImpl implements ProductService {
                                 log.warn("Ai client request error: {}", error.getMessage());
                                 return Mono.just(ERROR_CATEGORY);
                             })
-                    .subscribe(cat -> repository.addProductByUserId(userId, productName, cat));
+                    .subscribe(
+                            cat ->
+                                    repository.addProductByUserId(
+                                            userId, productName, formatCategory(cat)));
         } catch (WebRequestException ex) {
             log.warn(ex.getMessage());
             repository.addProductByUserId(userId, productName, ERROR_CATEGORY);
@@ -64,5 +69,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int getProductQuantity(Long userId) {
         return repository.countByUserId(userId);
+    }
+
+    private String formatCategory(String category) {
+        String lowerCase = category.toLowerCase(Locale.ROOT);
+        return StringUtils.capitalize(lowerCase);
     }
 }
