@@ -16,6 +16,7 @@ import ru.adaliza.model.*;
 @Slf4j
 @Service
 public class BaseWebService implements WebService {
+    private static final String ERROR_CATEGORY = "Other";
     private final WebClient webClient;
     private final JwtService jwtService;
 
@@ -25,7 +26,9 @@ public class BaseWebService implements WebService {
     }
 
     private static WebMessage createProductCategorySysMessage() {
-        return new WebMessage(WebMessageRole.SYSTEM, "Называй только продовольственные категории");
+        return new WebMessage(
+                WebMessageRole.SYSTEM,
+                "Называй только обобщенную категорию товаров. Используй не более трёх слов");
     }
 
     public Mono<String> getProductCategory(String product) {
@@ -36,7 +39,7 @@ public class BaseWebService implements WebService {
             return makeRequest(jwtToken.getAccessToken(), requestId, product);
         } catch (WebRequestException ex) {
             log.error(ex.getMessage());
-            return Mono.just("прочее");
+            return Mono.just(ERROR_CATEGORY);
         }
     }
 

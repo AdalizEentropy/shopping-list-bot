@@ -32,8 +32,7 @@ public class WebClientConfig {
                         + Base64.getEncoder()
                                 .encodeToString(authData.getBytes(Charset.defaultCharset()));
         return WebClient.builder()
-                //                .baseUrl(webClientProperties.getTokenUrl())
-                .baseUrl("http://127.0.0.1:8080/api/v1")
+                .baseUrl(webClientProperties.getTokenUrl())
                 .defaultHeader(HttpHeaders.AUTHORIZATION, authHeader)
                 .defaultHeader(HttpHeaders.ACCEPT, "*/*")
                 .defaultHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate, br")

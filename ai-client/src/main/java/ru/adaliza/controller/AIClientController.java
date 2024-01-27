@@ -1,10 +1,7 @@
 package ru.adaliza.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.adaliza.service.WebService;
 
@@ -14,8 +11,8 @@ import ru.adaliza.service.WebService;
 public class AIClientController {
     private final WebService webService;
 
-    @GetMapping("/category/{product}")
-    public Mono<String> getProductCategory(@PathVariable String product) {
+    @GetMapping("/category")
+    public Mono<String> getProductCategory(@RequestParam String product) {
 
         return webService.getProductCategory(product);
     }
