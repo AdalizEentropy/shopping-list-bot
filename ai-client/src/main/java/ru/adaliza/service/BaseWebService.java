@@ -10,7 +10,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import ru.adaliza.exception.WebRequestException;
 import ru.adaliza.model.*;
 
 @Slf4j
@@ -37,7 +36,7 @@ public class BaseWebService implements WebService {
         try {
             JwtToken jwtToken = jwtService.getAccessToken();
             return makeRequest(jwtToken.getAccessToken(), requestId, product);
-        } catch (WebRequestException ex) {
+        } catch (RuntimeException ex) {
             log.error(ex.getMessage());
             return Mono.just(ERROR_CATEGORY);
         }
@@ -56,21 +55,13 @@ public class BaseWebService implements WebService {
                                         createProductCategorySysMessage(),
                                         new WebMessage(WebMessageRole.USER, product))))
                 .retrieve()
-                .onStatus(
-                        HttpStatusCode::isError,
-                        error ->
-                                Mono.error(
-                                        new WebRequestException(
-                                                "Product category request error. Status: "
-                                                        + error.statusCode())))
                 .bodyToMono(WebResponse.class)
                 .map(this::mapResponseToCategory)
                 .onErrorResume(
-                        error ->
-                                Mono.error(
-                                        new WebRequestException(
-                                                "Product category request error. "
-                                                        + error.getMessage())));
+                        error -> {
+                            log.error("Product category request error. {}", error.getMessage());
+                            return Mono.just(ERROR_CATEGORY);
+                        });
     }
 
     private String mapResponseToCategory(WebResponse response) {
@@ -78,8 +69,16 @@ public class BaseWebService implements WebService {
             return response.getChoices().stream()
                     .findFirst()
                     .map(choice -> choice.getMessage().getContent())
-                    .orElse(null);
+                    .orElseGet(
+                            () -> {
+                                log.warn(
+                                        "Product category response has incorrect body: {}",
+                                        response);
+                                return ERROR_CATEGORY;
+                            });
         }
-        return null;
+
+        log.warn("Product category response has empty body");
+        return ERROR_CATEGORY;
     }
 }

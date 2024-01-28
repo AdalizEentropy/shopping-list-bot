@@ -7,7 +7,6 @@ import java.time.Instant;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -37,6 +36,7 @@ public class JwtService {
         lock.lock();
         try {
             if (isJwtTokenValid()) {
+                log.debug("Get jwtToken from memory");
                 return jwtToken;
             } else {
                 return updateJwtToken();
@@ -44,6 +44,9 @@ public class JwtService {
         } catch (WebRequestException ex) {
             log.error(ex.getMessage());
             throw ex;
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage());
+            throw new WebRequestException(ex.getMessage());
         } finally {
             lock.unlock();
         }
@@ -62,7 +65,7 @@ public class JwtService {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("scope", properties.getScope());
         String requestId = String.valueOf(randomUUID());
-        log.debug("Get jwtToken: reqId={}", requestId);
+        log.debug("Get jwtToken from server: reqId={}", requestId);
 
         return webClient
                 .post()
@@ -71,13 +74,6 @@ public class JwtService {
                 .header("RqUID", requestId)
                 .bodyValue(formData)
                 .retrieve()
-                .onStatus(
-                        HttpStatusCode::isError,
-                        error ->
-                                Mono.error(
-                                        new WebRequestException(
-                                                "Jwt token request error. Status: "
-                                                        + error.statusCode())))
                 .bodyToMono(JwtToken.class)
                 .onErrorResume(
                         error ->

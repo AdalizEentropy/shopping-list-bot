@@ -18,6 +18,12 @@ dependencies {
 //    implementation("org.springframework.boot:spring-boot-starter-security")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // ---test ---//
+    testImplementation("org.apache.commons:commons-lang3")
+    testImplementation("com.squareup.okhttp3:okhttp")
+    testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("io.projectreactor:reactor-test")
 }
 
 tasks.getByName<BootJar>("bootJar") {

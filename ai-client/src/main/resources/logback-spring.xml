@@ -16,10 +16,10 @@
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="debug"/>
+    <logger name="org.springframework" level="info"/>
     <logger name="com.zaxxer.hikari" level="info"/>
 
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="CONSOLE"/>
     </root>
 
