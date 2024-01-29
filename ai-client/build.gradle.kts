@@ -11,6 +11,7 @@ dependencies {
     //--- lombok ---//
     implementation("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     // ---spring ---//
     implementation("org.springframework.boot:spring-boot-starter-web")

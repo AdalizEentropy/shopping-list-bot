@@ -4,6 +4,7 @@ import static java.util.UUID.randomUUID;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
@@ -57,6 +58,7 @@ public class BaseWebService implements WebService {
                 .retrieve()
                 .bodyToMono(WebResponse.class)
                 .map(this::mapResponseToCategory)
+                .single()
                 .onErrorResume(
                         error -> {
                             log.error("Product category request error. {}", error.getMessage());
@@ -68,7 +70,9 @@ public class BaseWebService implements WebService {
         if (response != null) {
             return response.getChoices().stream()
                     .findFirst()
-                    .map(choice -> choice.getMessage().getContent())
+                    .map(Choice::getMessage)
+                    .filter(Objects::nonNull)
+                    .map(WebMessage::getContent)
                     .orElseGet(
                             () -> {
                                 log.warn(

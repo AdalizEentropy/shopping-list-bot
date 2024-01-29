@@ -20,27 +20,21 @@ import ru.adaliza.properties.WebClientProperties;
 
 class JwtServiceTest {
     private static MockWebServer mockWebServer;
-    private static String testUrl;
-    private static WebClientProperties properties;
-    private JwtService jwtService;
+    private static JwtService jwtService;
 
     @BeforeAll
     static void setUpMockWebServer() throws IOException {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
-        testUrl = mockWebServer.url("/").url().toString();
-        properties =
+        String testUrl = mockWebServer.url("/").url().toString();
+        WebClientProperties properties =
                 new WebClientProperties("", testUrl, "", "", "test-scope", Duration.ofMillis(2000));
+        jwtService = new JwtService(WebClient.builder().baseUrl(testUrl).build(), properties);
     }
 
     @AfterAll
     static void tearDownMockWebServer() throws IOException {
         mockWebServer.shutdown();
-    }
-
-    @BeforeEach
-    void initialize() {
-        jwtService = new JwtService(WebClient.builder().baseUrl(testUrl).build(), properties);
     }
 
     @Test
@@ -75,7 +69,9 @@ class JwtServiceTest {
     }
 
     @Test
-    void shouldReturn_accessTokenFromServer_ifNotTokenInMemory() {
+    void shouldReturn_accessTokenFromServer_ifNotTokenInMemory() throws IllegalAccessException {
+        FieldUtils.writeField(jwtService, "jwtToken", null, true);
+
         String tokenFromServer = "{\"access_token\": \"token_from_server\", \"expires_at\": 12345}";
         mockWebServer.enqueue(
                 new MockResponse()
@@ -90,7 +86,9 @@ class JwtServiceTest {
     }
 
     @Test
-    void shouldGet_accessTokenFromServer_onlyOneTime() {
+    void shouldGet_accessTokenFromServer_onlyOneTime() throws IllegalAccessException {
+        FieldUtils.writeField(jwtService, "jwtToken", null, true);
+
         long expDate = Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli();
         String tokenFromServer =
                 "{\"access_token\": \"token_from_server\", \"expires_at\":" + expDate + "}";
@@ -112,7 +110,9 @@ class JwtServiceTest {
     }
 
     @Test
-    void shouldThrow_ifAccessTokenFromServer_returnWithErrorCode() {
+    void shouldThrow_ifAccessTokenFromServer_returnWithErrorCode() throws IllegalAccessException {
+        FieldUtils.writeField(jwtService, "jwtToken", null, true);
+
         mockWebServer.enqueue(
                 new MockResponse()
                         .setResponseCode(404)
@@ -127,7 +127,9 @@ class JwtServiceTest {
     }
 
     @Test
-    void shouldThrow_ifNoResponse_fromServer() {
+    void shouldThrow_ifNoResponse_fromServer() throws IllegalAccessException {
+        FieldUtils.writeField(jwtService, "jwtToken", null, true);
+
         WebRequestException exception =
                 assertThrows(WebRequestException.class, () -> jwtService.getAccessToken());
         assertEquals("Timeout on blocking read for 2000000000 NANOSECONDS", exception.getMessage());

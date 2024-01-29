@@ -51,7 +51,7 @@ class BaseWebServiceTest {
                         .setResponseCode(200)
                         .setHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .setBody(
-                                "{\"choices\": [{\"message\": {\"content\": \"category_test\"}}]}"));
+                                "{\"choices\": [{\"message\": {\"role\": \"assistant\", \"content\": \"category_test\"}}]}"));
         Mono<String> category = baseWebService.getProductCategory("tomato");
 
         StepVerifier.create(category).expectNext("category_test").expectComplete().verify();
@@ -71,7 +71,6 @@ class BaseWebServiceTest {
     }
 
     @Test
-    @Disabled
     void shouldReturn_defaultProductCategory_ifServerRespNull() {
         when(jwtService.getAccessToken()).thenReturn(new JwtToken("token", 123456));
 
@@ -85,17 +84,13 @@ class BaseWebServiceTest {
     }
 
     @Test
-    @Disabled
     void shouldReturn_defaultProductCategory_ifServerRespTimeout() {
         when(jwtService.getAccessToken()).thenReturn(new JwtToken("token", 123456));
 
         mockWebServer.enqueue(new MockResponse().setBodyDelay(1, TimeUnit.SECONDS));
         Mono<String> category = baseWebService.getProductCategory("tomato");
 
-        StepVerifier.create(category)
-                //                .expectNext("Other")
-                .expectComplete()
-                .verify();
+        StepVerifier.create(category).expectNext("Other").expectComplete().verify();
     }
 
     @Test

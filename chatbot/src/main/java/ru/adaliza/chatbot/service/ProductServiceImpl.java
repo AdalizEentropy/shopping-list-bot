@@ -5,12 +5,11 @@ import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.adaliza.chatbot.dao.ProductRepository;
-import ru.adaliza.chatbot.exception.WebRequestException;
 import ru.adaliza.chatbot.model.Product;
 
 @Slf4j
@@ -27,40 +26,44 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void removeAllProducts(Long userId) {
         repository.removeAllByUserId(userId);
+        log.debug("All products were removed for userId {}", userId);
     }
 
     @Override
+    @Transactional
     public void removeProductById(Long productId) {
         repository.deleteById(productId);
+        log.debug("Product with id {} was removed", productId);
     }
 
     @Override
+    @Transactional
     public void addProduct(Long userId, String productName) {
         try {
             webClient
                     .get()
                     .uri(builder -> builder.queryParam("product", productName).build())
                     .retrieve()
-                    .onStatus(
-                            HttpStatusCode::isError,
-                            error ->
-                                    Mono.error(
-                                            new WebRequestException(
-                                                    "Ai client request error. Status: "
-                                                            + error.statusCode())))
                     .bodyToMono(String.class)
+                    .single()
                     .onErrorResume(
                             error -> {
                                 log.warn("Ai client request error: {}", error.getMessage());
                                 return Mono.just(ERROR_CATEGORY);
                             })
                     .subscribe(
-                            cat ->
-                                    repository.addProductByUserId(
-                                            userId, productName, formatCategory(cat)));
-        } catch (WebRequestException ex) {
+                            cat -> {
+                                repository.addProductByUserId(
+                                        userId, productName, formatCategory(cat));
+                                log.debug(
+                                        "Product '{}' for userId {} was added",
+                                        productName,
+                                        userId);
+                            });
+        } catch (Exception ex) {
             log.warn(ex.getMessage());
             repository.addProductByUserId(userId, productName, ERROR_CATEGORY);
         }

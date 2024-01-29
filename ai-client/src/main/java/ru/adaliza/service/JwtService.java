@@ -20,10 +20,10 @@ import ru.adaliza.properties.WebClientProperties;
 @Slf4j
 @Service
 public class JwtService {
+    private static JwtToken jwtToken;
     private final WebClient webClient;
     private final WebClientProperties properties;
     private final ReentrantLock lock;
-    private JwtToken jwtToken;
 
     public JwtService(
             @Qualifier("jwtWebClient") WebClient webClient, WebClientProperties properties) {
