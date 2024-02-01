@@ -2,6 +2,7 @@ package ru.adaliza.chatbot.service;
 
 import java.util.List;
 import ru.adaliza.chatbot.model.Product;
+import ru.adaliza.chatbot.service.language.LanguageCode;
 
 public interface ProductService {
 
@@ -11,7 +12,7 @@ public interface ProductService {
 
     void removeProductById(Long productId);
 
-    void addProduct(Long chatId, String productName);
+    void addProduct(Long chatId, String productName, LanguageCode languageCode);
 
     int getProductQuantity(Long userId);
 }

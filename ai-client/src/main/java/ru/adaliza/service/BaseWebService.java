@@ -25,25 +25,34 @@ public class BaseWebService implements WebService {
         this.jwtService = jwtService;
     }
 
-    private static WebMessage createProductCategorySysMessage() {
-        return new WebMessage(
-                WebMessageRole.SYSTEM,
-                "Называй только обобщенную категорию товаров. Используй не более трёх слов");
-    }
-
-    public Mono<String> getProductCategory(String product) {
-        String requestId = String.valueOf(randomUUID());
-        log.debug("Get product category: reqId={}, product={}", requestId, product);
+    public Mono<String> getProductCategory(String product, String lang) {
         try {
             JwtToken jwtToken = jwtService.getAccessToken();
-            return makeRequest(jwtToken.getAccessToken(), requestId, product);
+            return makeRequest(jwtToken.getAccessToken(), product, lang);
         } catch (RuntimeException ex) {
             log.error(ex.getMessage());
             return Mono.just(ERROR_CATEGORY);
         }
     }
 
-    private Mono<String> makeRequest(String accessToken, String requestId, String product) {
+    private WebMessage createProductCategorySysMessage(String lang) {
+        String languageResult;
+        if ("RU".equals(lang)) {
+            languageResult = "Пиши ответ на русском";
+        } else {
+            languageResult = "Пиши ответ на английском";
+        }
+
+        return new WebMessage(
+                WebMessageRole.SYSTEM,
+                "Называй только обобщенную категорию товара, как в онлайн магазине. Используй не более трёх слов. "
+                        + languageResult);
+    }
+
+    private Mono<String> makeRequest(String accessToken, String product, String lang) {
+        String requestId = String.valueOf(randomUUID());
+        log.debug("Get product category: reqId={}, product={}", requestId, product);
+
         return webClient
                 .post()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -53,7 +62,7 @@ public class BaseWebService implements WebService {
                 .bodyValue(
                         new WebRequest(
                                 List.of(
-                                        createProductCategorySysMessage(),
+                                        createProductCategorySysMessage(lang),
                                         new WebMessage(WebMessageRole.USER, product))))
                 .retrieve()
                 .bodyToMono(WebResponse.class)

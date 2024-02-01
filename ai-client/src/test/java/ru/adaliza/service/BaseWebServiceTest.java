@@ -52,7 +52,7 @@ class BaseWebServiceTest {
                         .setHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .setBody(
                                 "{\"choices\": [{\"message\": {\"role\": \"assistant\", \"content\": \"category_test\"}}]}"));
-        Mono<String> category = baseWebService.getProductCategory("tomato");
+        Mono<String> category = baseWebService.getProductCategory("tomato", "RU");
 
         StepVerifier.create(category).expectNext("category_test").expectComplete().verify();
     }
@@ -65,7 +65,7 @@ class BaseWebServiceTest {
                 new MockResponse()
                         .setResponseCode(500)
                         .setHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
-        Mono<String> category = baseWebService.getProductCategory("tomato");
+        Mono<String> category = baseWebService.getProductCategory("tomato", "EN");
 
         StepVerifier.create(category).expectNext("Other").expectComplete().verify();
     }
@@ -78,7 +78,7 @@ class BaseWebServiceTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
-        Mono<String> category = baseWebService.getProductCategory("tomato");
+        Mono<String> category = baseWebService.getProductCategory("tomato", "EN");
 
         StepVerifier.create(category).expectNext("Other").expectComplete().verify();
     }
@@ -88,7 +88,7 @@ class BaseWebServiceTest {
         when(jwtService.getAccessToken()).thenReturn(new JwtToken("token", 123456));
 
         mockWebServer.enqueue(new MockResponse().setBodyDelay(1, TimeUnit.SECONDS));
-        Mono<String> category = baseWebService.getProductCategory("tomato");
+        Mono<String> category = baseWebService.getProductCategory("tomato", "EN");
 
         StepVerifier.create(category).expectNext("Other").expectComplete().verify();
     }
@@ -103,7 +103,7 @@ class BaseWebServiceTest {
                         .setHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .setBody("{\"choices\": [{\"message\": null}]}"));
 
-        Mono<String> category = baseWebService.getProductCategory("tomato");
+        Mono<String> category = baseWebService.getProductCategory("tomato", "EN");
 
         StepVerifier.create(category).expectNext("Other").expectComplete().verify();
     }

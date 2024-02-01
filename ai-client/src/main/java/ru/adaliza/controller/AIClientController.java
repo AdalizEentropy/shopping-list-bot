@@ -12,8 +12,9 @@ public class AIClientController {
     private final WebService webService;
 
     @GetMapping("/category")
-    public Mono<String> getProductCategory(@RequestParam String product) {
+    public Mono<String> getProductCategory(
+            @RequestParam String product, @RequestParam(defaultValue = "EN") String lang) {
 
-        return webService.getProductCategory(product);
+        return webService.getProductCategory(product, lang);
     }
 }

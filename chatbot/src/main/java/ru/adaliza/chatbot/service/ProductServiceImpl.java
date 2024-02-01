@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.adaliza.chatbot.dao.ProductRepository;
 import ru.adaliza.chatbot.model.Product;
+import ru.adaliza.chatbot.service.language.LanguageCode;
 
 @Slf4j
 @Service
@@ -41,11 +42,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void addProduct(Long userId, String productName) {
+    public void addProduct(Long userId, String productName, LanguageCode languageCode) {
         try {
             webClient
                     .get()
-                    .uri(builder -> builder.queryParam("product", productName).build())
+                    .uri(
+                            builder ->
+                                    builder.queryParam("product", productName)
+                                            .queryParam("lang", languageCode)
+                                            .build())
                     .retrieve()
                     .bodyToMono(String.class)
                     .single()

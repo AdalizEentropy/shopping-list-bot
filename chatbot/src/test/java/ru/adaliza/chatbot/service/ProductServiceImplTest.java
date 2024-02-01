@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.adaliza.chatbot.dao.ProductRepository;
 import ru.adaliza.chatbot.model.Product;
+import ru.adaliza.chatbot.service.language.LanguageCode;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
@@ -80,7 +81,7 @@ class ProductServiceImplTest {
                         .setResponseCode(200)
                         .setHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .setBody("vegetable"));
-        productService.addProduct(1L, "tomato");
+        productService.addProduct(1L, "tomato", LanguageCode.EN);
 
         await().untilAsserted(
                         () -> verify(repository).addProductByUserId(1L, "tomato", "Vegetable"));
@@ -93,7 +94,7 @@ class ProductServiceImplTest {
                         .setResponseCode(400)
                         .setHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .setBody("vegetable"));
-        productService.addProduct(1L, "tomato");
+        productService.addProduct(1L, "tomato", LanguageCode.EN);
 
         await().untilAsserted(() -> verify(repository).addProductByUserId(1L, "tomato", "Other"));
     }
@@ -101,7 +102,7 @@ class ProductServiceImplTest {
     @Test
     void shouldAddProduct_withDefaultCategory_ifNoResp() {
         mockWebServer.enqueue(new MockResponse().setBodyDelay(1, TimeUnit.SECONDS));
-        productService.addProduct(1L, "tomato");
+        productService.addProduct(1L, "tomato", LanguageCode.EN);
 
         await().untilAsserted(() -> verify(repository).addProductByUserId(1L, "tomato", "Other"));
     }

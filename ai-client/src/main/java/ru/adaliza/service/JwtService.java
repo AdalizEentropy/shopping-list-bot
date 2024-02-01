@@ -32,6 +32,11 @@ public class JwtService {
         this.lock = new ReentrantLock();
     }
 
+    private static void setJwtToken(JwtToken token) {
+        jwtToken = token;
+        log.debug("JwtToken was updated");
+    }
+
     public JwtToken getAccessToken() {
         lock.lock();
         try {
@@ -80,11 +85,7 @@ public class JwtService {
                                 Mono.error(
                                         new WebRequestException(
                                                 "Jwt token request error. " + error.getMessage())))
-                .doOnSuccess(
-                        token -> {
-                            jwtToken = token;
-                            log.debug("JwtToken was updated");
-                        })
+                .doOnSuccess(JwtService::setJwtToken)
                 .block(properties.getResponseTimeout());
     }
 }
