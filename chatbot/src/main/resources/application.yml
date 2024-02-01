@@ -5,7 +5,7 @@ telegram:
         max-product-quantity: 30
         languages-file: chatbot/src/main/resources/text-in-languages.json
 ai-client:
-    url: http://localhost:9090/ai-client/category
+    url: ${AI_CLIENT_URL}
     response-timeout: PT8S
 
 spring:
