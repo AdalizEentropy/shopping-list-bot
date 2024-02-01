@@ -1,6 +1,10 @@
-package ru.adaliza.module;
+package ru.adaliza.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * "model": идентификатор модели, можно указать конкретную или :latest
@@ -23,17 +27,33 @@ import java.util.List;
  * "role": "user", // запрос пользователя "content": "Напиши 5 вариантов названий для космической
  * станции" } ]
  */
+@Getter
+@Setter
+@ToString
 public class WebRequest {
-    private final String model = "GigaChat:latest";
-    private final double temperature = 0.87;
-    private final int n = 1;
-    private final int maxTokens = 512;
-    private final double repetitionPenalty = 1.0;
-    private final boolean stream = false;
-    private final int updateInterval = 0;
-    private List<WebMessage> messages;
+    private final String model;
+    private final double temperature;
+    private final int n;
+    private final boolean stream;
+    private final List<WebMessage> messages;
+
+    @JsonProperty("max_tokens")
+    private final int maxTokens;
+
+    @JsonProperty("repetition_penalty")
+    private final double repetitionPenalty;
+
+    @JsonProperty("update_interval")
+    private final int updateInterval;
 
     public WebRequest(List<WebMessage> messages) {
+        this.model = "GigaChat:latest";
+        this.temperature = 0.87;
+        this.n = 1;
+        this.maxTokens = 512;
+        this.repetitionPenalty = 1.0;
+        this.stream = false;
+        this.updateInterval = 0;
         this.messages = messages;
     }
 }

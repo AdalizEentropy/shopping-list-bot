@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/baseline.sql
   - include:
       file: db/changelog/fix_username.sql
+  - include:
+      file: db/changelog/add_prod_category.sql

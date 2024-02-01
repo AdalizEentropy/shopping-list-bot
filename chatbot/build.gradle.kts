@@ -12,6 +12,7 @@ dependencies {
     //--- lombok ---//
     implementation("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     // ---spring ---//
     implementation("org.springframework.boot:spring-boot-starter")
@@ -27,6 +28,12 @@ dependencies {
     //--- db ---//
     implementation("org.liquibase:liquibase-core:$liquibaseVersion")
     implementation("org.postgresql:postgresql")
+
+    //---test ---//
+    testImplementation("com.squareup.okhttp3:okhttp")
+    testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("org.awaitility:awaitility")
+    testImplementation("com.h2database:h2")
 }
 
 //------------------------//

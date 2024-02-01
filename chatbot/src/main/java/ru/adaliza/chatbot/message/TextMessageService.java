@@ -15,6 +15,7 @@ import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.property.BotProperties;
 import ru.adaliza.chatbot.service.ProductService;
 import ru.adaliza.chatbot.service.UserService;
+import ru.adaliza.chatbot.service.language.LanguageCode;
 import ru.adaliza.chatbot.service.language.LanguageConverter;
 import ru.adaliza.chatbot.service.language.model.LanguageData;
 
@@ -45,7 +46,9 @@ public class TextMessageService implements MessageService<Serializable> {
                         languageData);
             } else {
                 String product = update.getMessage().getText();
-                productService.addProduct(chatId, product);
+                LanguageCode languageCode =
+                        languageConverter.getLanguageCode(update.getMessage().getFrom());
+                productService.addProduct(chatId, product, languageCode);
                 String text = String.format(languageData.added(), product);
                 return createReplyKeyboardMessage(
                         chatId, user.get().getMainMessageId(), text, languageData);

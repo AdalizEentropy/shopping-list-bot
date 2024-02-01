@@ -13,4 +13,5 @@ public record LanguageData(
         String removeAll,
         String help,
         String unknown,
-        String errorAdding) {}
+        String errorAdding,
+        String otherProduct) {}

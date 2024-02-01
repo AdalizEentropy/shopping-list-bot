@@ -12,7 +12,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
             "select pr.* from products pr "
                     + "join shopping_lists sl on pr.shopping_list_id = sl.id "
                     + "where sl.user_id = :userId "
-                    + "order by pr.product_name")
+                    + "order by pr.category, pr.product_name")
     List<Product> findAllByUserId(long userId);
 
     @Modifying
@@ -24,9 +24,9 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     @Modifying
     @Query(
-            "insert into products (product_name, shopping_list_id) "
-                    + "select :productName, id from shopping_lists where user_id = :userId")
-    void addProductByUserId(Long userId, String productName);
+            "insert into products (product_name, shopping_list_id, category) "
+                    + "select :productName, id, :category from shopping_lists where user_id = :userId")
+    void addProductByUserId(Long userId, String productName, String category);
 
     @Query(
             "select count(pr.id) from products pr "
