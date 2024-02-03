@@ -46,11 +46,14 @@ public class ShowCommandService extends AbstractCommandService {
     private void sortProducts(List<Product> allShoppingList, StringBuilder builder) {
         String category = null;
         for (Product product : allShoppingList) {
-            if (category == null || !category.equals(product.category())) {
-                category = product.category();
+            var prodCategory =
+                    StringUtils.isEmpty(product.category())
+                            ? languageData.otherProduct()
+                            : product.category();
+            if (category == null || !category.equals(prodCategory)) {
+                category = prodCategory;
                 builder.append("\n<i>");
-                builder.append(
-                        StringUtils.isEmpty(category) ? languageData.otherProduct() : category);
+                builder.append(category);
                 builder.append("</i>\n");
             }
             builder.append("- ");

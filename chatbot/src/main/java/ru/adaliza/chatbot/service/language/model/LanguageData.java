@@ -1,5 +1,8 @@
 package ru.adaliza.chatbot.service.language.model;
 
+import lombok.Builder;
+
+@Builder
 public record LanguageData(
         ButtonNames buttons,
         String welcome,
