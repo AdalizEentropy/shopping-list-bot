@@ -38,15 +38,18 @@ public class BaseWebService implements WebService {
     private WebMessage createProductCategorySysMessage(String lang) {
         String languageResult;
         if ("RU".equals(lang)) {
-            languageResult = "Пиши ответ на русском";
+            languageResult = "продукты, одежда, бытовая химия, товары для дома, прочее. ";
         } else {
-            languageResult = "Пиши ответ на английском";
+            languageResult = "products, clothes, household chemicals, household products, other. ";
         }
 
         return new WebMessage(
                 WebMessageRole.SYSTEM,
-                "Называй только обобщенную категорию товара, как в онлайн магазине. Используй не более трёх слов. "
-                        + languageResult);
+                "Я хочу создать интернет-магазин, где товары разделены только на следующие категории: "
+                        + languageResult
+                        + "Назови, к какой из моих перечисленных категорий относится товар. "
+                        + "Называй только категорию. "
+                        + "Не используй слово \"категория\".");
     }
 
     private Mono<String> makeRequest(String accessToken, String product, String lang) {
