@@ -6,6 +6,7 @@
       "remove": "Remove",
       "clear": "Remove all",
       "help": "Help",
+      "settings": "Settings",
       "menu": "Main menu"
     },
     "welcome": "Welcome to the shopping list bot",
@@ -29,6 +30,7 @@
       "remove": "Удалить",
       "clear": "Удалить все",
       "help": "Помощь",
+      "settings": "Настройки",
       "menu": "Главное меню"
     },
     "welcome": "Добро пожаловать в бот для списка покупок",

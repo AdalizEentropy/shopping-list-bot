@@ -16,6 +16,7 @@ public class InlineKeyboardInitializer {
     private final InlineKeyboardButton addButton;
     private final InlineKeyboardButton removeButton;
     private final InlineKeyboardButton clearButton;
+    private final InlineKeyboardButton settingsButton;
     private final InlineKeyboardButton helpButton;
     private final InlineKeyboardButton mainMenuButton;
 
@@ -26,6 +27,7 @@ public class InlineKeyboardInitializer {
         clearButton = new InlineKeyboardButton();
         helpButton = new InlineKeyboardButton();
         mainMenuButton = new InlineKeyboardButton();
+        settingsButton = new InlineKeyboardButton();
         initInlineKeyboardButtonCallbackData();
     }
 
@@ -33,7 +35,11 @@ public class InlineKeyboardInitializer {
         initInlineKeyboardButtonNames(languageData);
         List<InlineKeyboardButton> rowInline = List.of(addButton, removeButton, clearButton);
         List<List<InlineKeyboardButton>> rows =
-                List.of(List.of(showButton), rowInline, List.of(helpButton));
+                List.of(
+                        List.of(showButton),
+                        rowInline,
+                        List.of(settingsButton),
+                        List.of(helpButton));
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         markupInline.setKeyboard(rows);
@@ -70,6 +76,7 @@ public class InlineKeyboardInitializer {
         addButton.setText("➕ " + languageData.buttons().add());
         removeButton.setText("➖ " + languageData.buttons().remove());
         clearButton.setText("❌ " + languageData.buttons().clear());
+        settingsButton.setText("⚙\uFE0F " + languageData.buttons().settings());
         helpButton.setText("❔ " + languageData.buttons().help());
         mainMenuButton.setText("🔙 " + languageData.buttons().menu());
     }
@@ -79,6 +86,7 @@ public class InlineKeyboardInitializer {
         addButton.setCallbackData(ADD.getCommand());
         clearButton.setCallbackData(CLEAR.getCommand());
         removeButton.setCallbackData(REMOVE.getCommand());
+        settingsButton.setCallbackData(SETTINGS.getCommand());
         helpButton.setCallbackData(HELP.getCommand());
         mainMenuButton.setCallbackData(MENU.getCommand());
     }

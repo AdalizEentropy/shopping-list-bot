@@ -10,6 +10,7 @@ public enum BotCommand {
     REMOVE("/remove"),
     MENU("/menu"),
     HELP("/help"),
+    SETTINGS("/settings"),
     UNKNOWN("/unknown");
 
     private final String command;

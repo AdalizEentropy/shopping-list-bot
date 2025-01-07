@@ -40,15 +40,15 @@ public class BaseWebService implements WebService {
         if ("RU".equals(lang)) {
             languageResult = "продукты, одежда, бытовая химия, товары для дома, прочее. ";
         } else {
-            languageResult = "products, clothes, household chemicals, household products, other. ";
+            languageResult = "food, clothes, household chemicals, household products, other. ";
         }
 
         return new WebMessage(
                 WebMessageRole.SYSTEM,
-                "Я хочу создать интернет-магазин, где товары разделены только на следующие категории: "
+                "Я хочу создать интернет-магазин, где товары разделены только строго на следующие категории: "
                         + languageResult
                         + "Назови, к какой из моих перечисленных категорий относится товар. "
-                        + "Называй только категорию. "
+                        + "Называй только категорию, из мною перечисленных. "
                         + "Не используй слово \"категория\".");
     }
 

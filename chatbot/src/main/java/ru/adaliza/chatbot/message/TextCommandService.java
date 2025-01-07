@@ -11,7 +11,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import ru.adaliza.chatbot.keyboard.InlineKeyboardInitializer;
+import ru.adaliza.chatbot.model.UserSettings;
 import ru.adaliza.chatbot.service.UserService;
+import ru.adaliza.chatbot.service.UserSettingsService;
 import ru.adaliza.chatbot.service.language.LanguageConverter;
 import ru.adaliza.chatbot.service.language.model.LanguageData;
 
@@ -20,6 +22,7 @@ import ru.adaliza.chatbot.service.language.model.LanguageData;
 @RequiredArgsConstructor
 public class TextCommandService implements MessageService<Message> {
     private final UserService userService;
+    private final UserSettingsService userSettingsService;
     private final LanguageConverter languageConverter;
     private final InlineKeyboardInitializer keyboardInitializer;
 
@@ -31,6 +34,12 @@ public class TextCommandService implements MessageService<Message> {
         if (START.getCommand().equals(messageText)) {
             String userName = update.getMessage().getChat().getUserName();
             userService.addUser(chatId, userName);
+            userSettingsService.setSettings(
+                    new UserSettings(
+                            chatId,
+                            languageConverter.getLanguageCode(update.getMessage().getFrom()),
+                            true,
+                            true));
             log.info("New user with chatId {} was connected", chatId);
             return replyStartCommand(chatId, userName, update);
         } else {
