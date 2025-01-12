@@ -18,6 +18,7 @@ import ru.adaliza.chatbot.service.language.model.LanguageData;
 @Service
 @RequiredArgsConstructor
 public class ButtonService implements MessageService<Serializable> {
+    private static final String UNKNOWN_COMMAND = "unknownCommand";
     private final Map<String, BotCommandService> commands;
     private final UserService userService;
     private final LanguageConverter languageConverter;
@@ -59,7 +60,7 @@ public class ButtonService implements MessageService<Serializable> {
             case MENU -> replyMessage =
                     commands.get("menuCommand").createMessageForCommand(updateContext);
             default -> replyMessage =
-                    commands.get("unknownCommand").createMessageForCommand(updateContext);
+                    commands.get(UNKNOWN_COMMAND).createMessageForCommand(updateContext);
         }
 
         return replyMessage;
@@ -70,7 +71,7 @@ public class ButtonService implements MessageService<Serializable> {
         if (user.isPresent() && user.get().getChatPhase() == BotCommand.REMOVE) {
             return commands.get("removeCommand").createMessageForCommand(updateContext);
         } else {
-            return commands.get("unknownCommand").createMessageForCommand(updateContext);
+            return commands.get(UNKNOWN_COMMAND).createMessageForCommand(updateContext);
         }
     }
 
@@ -79,7 +80,7 @@ public class ButtonService implements MessageService<Serializable> {
         if (user.isPresent() && user.get().getChatPhase() == BotCommand.CATEGORY) {
             return commands.get("useCategoryCommand").createMessageForCommand(updateContext);
         } else {
-            return commands.get("unknownCommand").createMessageForCommand(updateContext);
+            return commands.get(UNKNOWN_COMMAND).createMessageForCommand(updateContext);
         }
     }
 }

@@ -88,7 +88,7 @@ public class InlineKeyboardInitializer {
     }
 
     public InlineKeyboardMarkup inlineEnableOptionMarkup(
-            LanguageData languageData, Boolean enable) {
+            LanguageData languageData, boolean enable) {
         initInlineKeyboardButtonNames(languageData);
         List<List<InlineKeyboardButton>> rows =
                 List.of(List.of(enable ? enableButton : disableButton), List.of(mainMenuButton));

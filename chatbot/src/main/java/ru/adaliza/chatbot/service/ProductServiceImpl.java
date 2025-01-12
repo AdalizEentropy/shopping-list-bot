@@ -66,10 +66,7 @@ public class ProductServiceImpl implements ProductService {
                                 log.warn("Ai client request error: {}", error.getMessage());
                                 return Mono.just(ERROR_CATEGORY);
                             })
-                    .subscribe(
-                            cat -> {
-                                addProduct(userId, productName, cat);
-                            });
+                    .subscribe(cat -> addProduct(userId, productName, cat));
         } catch (Exception ex) {
             log.warn(ex.getMessage());
             addProduct(userId, productName, ERROR_CATEGORY);

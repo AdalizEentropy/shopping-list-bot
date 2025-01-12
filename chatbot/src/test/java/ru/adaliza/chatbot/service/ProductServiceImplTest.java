@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.adaliza.chatbot.dao.ProductRepository;
+import ru.adaliza.chatbot.dao.UserSettingsRepository;
 import ru.adaliza.chatbot.model.Product;
 import ru.adaliza.chatbot.service.language.LanguageCode;
 
@@ -28,6 +29,7 @@ class ProductServiceImplTest {
     private static MockWebServer mockWebServer;
     private static String testUrl;
     @Mock private ProductRepository repository;
+    @Mock private UserSettingsRepository userSettingsRepository;
     private ProductService productService;
 
     @BeforeAll
@@ -44,8 +46,13 @@ class ProductServiceImplTest {
 
     @BeforeEach
     void initialize() {
+        UserSettingsService userSettingsService =
+                new BaseUserSettingsService(userSettingsRepository);
         productService =
-                new ProductServiceImpl(repository, WebClient.builder().baseUrl(testUrl).build());
+                new ProductServiceImpl(
+                        repository,
+                        WebClient.builder().baseUrl(testUrl).build(),
+                        userSettingsService);
     }
 
     @Test
@@ -76,6 +83,7 @@ class ProductServiceImplTest {
 
     @Test
     void shouldAddProduct_withCategory_ifRespOk() {
+        when(userSettingsRepository.getUseCategoryByUserId(1L)).thenReturn(true);
         mockWebServer.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -89,6 +97,7 @@ class ProductServiceImplTest {
 
     @Test
     void shouldAddProduct_withDefaultCategory_ifRespError() {
+        when(userSettingsRepository.getUseCategoryByUserId(1L)).thenReturn(true);
         mockWebServer.enqueue(
                 new MockResponse()
                         .setResponseCode(400)
@@ -101,6 +110,7 @@ class ProductServiceImplTest {
 
     @Test
     void shouldAddProduct_withDefaultCategory_ifNoResp() {
+        when(userSettingsRepository.getUseCategoryByUserId(1L)).thenReturn(true);
         mockWebServer.enqueue(new MockResponse().setBodyDelay(1, TimeUnit.SECONDS));
         productService.addProduct(1L, "tomato", LanguageCode.EN);
 
@@ -113,5 +123,13 @@ class ProductServiceImplTest {
         int productQuantity = productService.getProductQuantity(1L);
 
         assertThat(productQuantity).isEqualTo(5);
+    }
+
+    @Test
+    void shouldAddProduct_withDefaultCategory_ifUseCategory_disabled() {
+        when(userSettingsRepository.getUseCategoryByUserId(1L)).thenReturn(false);
+        productService.addProduct(1L, "tomato", LanguageCode.EN);
+
+        await().untilAsserted(() -> verify(repository).addProductByUserId(1L, "tomato", "Other"));
     }
 }

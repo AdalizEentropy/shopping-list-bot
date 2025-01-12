@@ -34,7 +34,7 @@ public class BaseUserSettingsService implements UserSettingsService {
     public void changeUseCategory(Long userId, Boolean enable) {
         Optional<UserSettings> userSettings = userSettingsRepository.findById(userId);
         if (userSettings.isEmpty()) {
-            throw new IllegalStateException("User settings not found");
+            throw new IllegalArgumentException("User settings not found");
         } else {
             UserSettings updatedSettings = userSettings.get();
             updatedSettings.setUseCategory(enable);
