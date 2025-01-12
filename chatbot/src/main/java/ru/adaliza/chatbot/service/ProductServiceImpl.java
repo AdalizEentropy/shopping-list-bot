@@ -20,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private static final String ERROR_CATEGORY = "Other";
     private final ProductRepository repository;
     private final WebClient webClient;
+    private final UserSettingsService userSettingsService;
 
     @Override
     public List<Product> getAllProducts(Long userId) {
@@ -43,6 +44,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void addProduct(Long userId, String productName, LanguageCode languageCode) {
+        boolean useCategory = userSettingsService.useCategory(userId);
+        if (!useCategory) {
+            addProduct(userId, productName, ERROR_CATEGORY);
+            return;
+        }
+
         try {
             webClient
                     .get()
@@ -59,18 +66,10 @@ public class ProductServiceImpl implements ProductService {
                                 log.warn("Ai client request error: {}", error.getMessage());
                                 return Mono.just(ERROR_CATEGORY);
                             })
-                    .subscribe(
-                            cat -> {
-                                repository.addProductByUserId(
-                                        userId, productName, formatCategory(cat));
-                                log.debug(
-                                        "Product '{}' for userId {} was added",
-                                        productName,
-                                        userId);
-                            });
+                    .subscribe(cat -> addProduct(userId, productName, cat));
         } catch (Exception ex) {
             log.warn(ex.getMessage());
-            repository.addProductByUserId(userId, productName, ERROR_CATEGORY);
+            addProduct(userId, productName, ERROR_CATEGORY);
         }
     }
 
@@ -82,5 +81,10 @@ public class ProductServiceImpl implements ProductService {
     private String formatCategory(String category) {
         String lowerCase = category.toLowerCase(Locale.ROOT);
         return StringUtils.capitalize(lowerCase);
+    }
+
+    private void addProduct(Long userId, String productName, String cat) {
+        repository.addProductByUserId(userId, productName, formatCategory(cat));
+        log.debug("Product '{}' for userId {} was added", productName, userId);
     }
 }

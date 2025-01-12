@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/fix_username.sql
   - include:
       file: db/changelog/add_prod_category.sql
+  - include:
+      file: db/changelog/add_settings.sql
