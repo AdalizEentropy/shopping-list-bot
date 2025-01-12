@@ -38,9 +38,11 @@ public class BaseWebService implements WebService {
     private WebMessage createProductCategorySysMessage(String lang) {
         String languageResult;
         if ("RU".equals(lang)) {
-            languageResult = "продукты, одежда, бытовая химия, товары для дома, прочее. ";
+            languageResult =
+                    "продукты, одежда, бытовая химия, товары для дома, товары для животных, прочее. ";
         } else {
-            languageResult = "food, clothes, household chemicals, household products, other. ";
+            languageResult =
+                    "food, clothes, household chemicals, household products, pet supplies, other. ";
         }
 
         return new WebMessage(
