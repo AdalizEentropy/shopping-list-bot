@@ -34,6 +34,8 @@ public class ButtonService implements MessageService<Serializable> {
 
         if (botCommand == BotCommand.UNKNOWN) {
             return executeMayBeProductButton(updateContext);
+        } else if (botCommand == BotCommand.ENABLE || botCommand == BotCommand.DISABLE) {
+            return executeEnableOptionButton(updateContext);
         } else {
             userService.updatePhase(chatId, botCommand);
         }
@@ -50,6 +52,10 @@ public class ButtonService implements MessageService<Serializable> {
                     commands.get("showCommand").createMessageForCommand(updateContext);
             case HELP -> replyMessage =
                     commands.get("helpCommand").createMessageForCommand(updateContext);
+            case SETTINGS -> replyMessage =
+                    commands.get("settingsCommand").createMessageForCommand(updateContext);
+            case CATEGORY -> replyMessage =
+                    commands.get("useCategoryCommand").createMessageForCommand(updateContext);
             case MENU -> replyMessage =
                     commands.get("menuCommand").createMessageForCommand(updateContext);
             default -> replyMessage =
@@ -63,6 +69,15 @@ public class ButtonService implements MessageService<Serializable> {
         Optional<User> user = userService.getUser(updateContext.chatId());
         if (user.isPresent() && user.get().getChatPhase() == BotCommand.REMOVE) {
             return commands.get("removeCommand").createMessageForCommand(updateContext);
+        } else {
+            return commands.get("unknownCommand").createMessageForCommand(updateContext);
+        }
+    }
+
+    private BotApiMethod<Serializable> executeEnableOptionButton(UpdateContext updateContext) {
+        Optional<User> user = userService.getUser(updateContext.chatId());
+        if (user.isPresent() && user.get().getChatPhase() == BotCommand.CATEGORY) {
+            return commands.get("useCategoryCommand").createMessageForCommand(updateContext);
         } else {
             return commands.get("unknownCommand").createMessageForCommand(updateContext);
         }

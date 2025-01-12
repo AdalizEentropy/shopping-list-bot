@@ -8,5 +8,7 @@ public interface UserSettingsService {
 
     boolean useCategory(Long userId);
 
+    void changeUseCategory(Long userId, Boolean enable);
+
     LanguageCode getLanguage(Long userId);
 }

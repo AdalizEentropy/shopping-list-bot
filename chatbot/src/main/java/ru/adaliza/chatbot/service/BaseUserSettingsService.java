@@ -18,13 +18,28 @@ public class BaseUserSettingsService implements UserSettingsService {
         if (userSettings.isEmpty()) {
             userSettingsRepository.save(new UserSettings(chatId, languageCode, true, true));
         } else {
-            userSettingsRepository.save(new UserSettings(chatId, languageCode, true));
+            UserSettings updatedSettings = userSettings.get();
+            updatedSettings.setUseCategory(true);
+            updatedSettings.setLanguage(languageCode);
+            userSettingsRepository.save(updatedSettings);
         }
     }
 
     @Override
     public boolean useCategory(Long userId) {
         return userSettingsRepository.getUseCategoryByUserId(userId);
+    }
+
+    @Override
+    public void changeUseCategory(Long userId, Boolean enable) {
+        Optional<UserSettings> userSettings = userSettingsRepository.findById(userId);
+        if (userSettings.isEmpty()) {
+            throw new IllegalStateException("User settings not found");
+        } else {
+            UserSettings updatedSettings = userSettings.get();
+            updatedSettings.setUseCategory(enable);
+            userSettingsRepository.save(updatedSettings);
+        }
     }
 
     @Override

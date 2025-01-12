@@ -6,7 +6,12 @@
       "remove": "Remove",
       "clear": "Remove all",
       "help": "Help",
-      "settings": "Settings",
+      "settings": {
+        "name": "Settings",
+        "useCategory": "Enable/disable category",
+        "enable": "Enable",
+        "disable": "Disable"
+      },
       "menu": "Main menu"
     },
     "welcome": "Welcome to the shopping list bot",
@@ -20,6 +25,8 @@
     "emptyRemove": "There are no products for removing",
     "removeAll": "All products have been cleared",
     "unknown": "Unknown command!",
+    "settings": "Choose options:",
+    "settingsChanged": "Settings was changed",
     "otherProduct": "Other",
     "help": "<b>Menu description:</b>\n\uD83D\uDD39 <b>Show shopping list</b> - just show list of all your products.\n\uD83D\uDD39 <b>Add</b> - enter product name and quantity for adding it to your shopping list. You can enter products one by one without returning to main menu.\n\uD83D\uDD39 <b>Remove</b> - select which product you wan to remove from the shopping list. You can remove products one by one without returning to main menu.\n\uD83D\uDD39 <b>Remove all</b> - remove all products from the shopping list."
   },
@@ -30,7 +37,12 @@
       "remove": "Удалить",
       "clear": "Удалить все",
       "help": "Помощь",
-      "settings": "Настройки",
+      "settings": {
+        "name": "Настройки",
+        "useCategory": "Включение/отключение категорий",
+        "enable": "Включить",
+        "disable": "Выключить"
+      },
       "menu": "Главное меню"
     },
     "welcome": "Добро пожаловать в бот для списка покупок",
@@ -44,6 +56,8 @@
     "emptyRemove": "Нет продуктов для удаления",
     "removeAll": "Все продукты были удалены",
     "unknown": "Неизвестная команда!",
+    "settings": "Выберите опции:",
+    "settingsChanged": "Настройки были изменены",
     "otherProduct": "Прочее",
     "help": "<b>Описание меню:</b>\n\uD83D\uDD39 <b>Показать список покупок</b> - отображает ваш список покупок.\n\uD83D\uDD39 <b>Добавить</b> - введите название продукта и количество для добавления в ваш список покупок. Вы можете вводить продукты один за другим не возвращаясь в главное меню.\n\uD83D\uDD39 <b>Удалить</b> - выберите продукт, который хотите удалить из вашего списка покупок. Вы можете удалять продукты один за другим не возвращаясь в главное меню.\n\uD83D\uDD39 <b>Удалить всё</b> - удалить все продукты из вашего списка покупок."
   }

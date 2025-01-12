@@ -6,5 +6,5 @@ public record ButtonNames(
         String remove,
         String clear,
         String help,
-        String settings,
+        ButtonSettingsNames settings,
         String menu) {}

@@ -1,7 +1,9 @@
 package ru.adaliza.chatbot.command;
 
 import java.util.stream.Stream;
+import lombok.Getter;
 
+@Getter
 public enum BotCommand {
     START("/start"),
     ADD("/add"),
@@ -11,6 +13,9 @@ public enum BotCommand {
     MENU("/menu"),
     HELP("/help"),
     SETTINGS("/settings"),
+    CATEGORY("/use_category"),
+    ENABLE("/enable"),
+    DISABLE("/disable"),
     UNKNOWN("/unknown");
 
     private final String command;
@@ -24,9 +29,5 @@ public enum BotCommand {
                 .filter(v -> v.command.equals(value))
                 .findFirst()
                 .orElse(UNKNOWN);
-    }
-
-    public String getCommand() {
-        return command;
     }
 }

@@ -19,6 +19,9 @@ public class InlineKeyboardInitializer {
     private final InlineKeyboardButton settingsButton;
     private final InlineKeyboardButton helpButton;
     private final InlineKeyboardButton mainMenuButton;
+    private final InlineKeyboardButton useCategoryButton;
+    private final InlineKeyboardButton enableButton;
+    private final InlineKeyboardButton disableButton;
 
     public InlineKeyboardInitializer() {
         showButton = new InlineKeyboardButton();
@@ -28,6 +31,9 @@ public class InlineKeyboardInitializer {
         helpButton = new InlineKeyboardButton();
         mainMenuButton = new InlineKeyboardButton();
         settingsButton = new InlineKeyboardButton();
+        useCategoryButton = new InlineKeyboardButton();
+        enableButton = new InlineKeyboardButton();
+        disableButton = new InlineKeyboardButton();
         initInlineKeyboardButtonCallbackData();
     }
 
@@ -71,14 +77,38 @@ public class InlineKeyboardInitializer {
         return markupInline;
     }
 
+    public InlineKeyboardMarkup inlineSettingsMarkup(LanguageData languageData) {
+        initInlineKeyboardButtonNames(languageData);
+        List<List<InlineKeyboardButton>> rows =
+                List.of(List.of(useCategoryButton), List.of(mainMenuButton));
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        markupInline.setKeyboard(rows);
+
+        return markupInline;
+    }
+
+    public InlineKeyboardMarkup inlineEnableOptionMarkup(
+            LanguageData languageData, Boolean enable) {
+        initInlineKeyboardButtonNames(languageData);
+        List<List<InlineKeyboardButton>> rows =
+                List.of(List.of(enable ? enableButton : disableButton), List.of(mainMenuButton));
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        markupInline.setKeyboard(rows);
+
+        return markupInline;
+    }
+
     public void initInlineKeyboardButtonNames(LanguageData languageData) {
         showButton.setText("🛒 " + languageData.buttons().show());
         addButton.setText("➕ " + languageData.buttons().add());
         removeButton.setText("➖ " + languageData.buttons().remove());
         clearButton.setText("❌ " + languageData.buttons().clear());
-        settingsButton.setText("⚙\uFE0F " + languageData.buttons().settings());
+        settingsButton.setText("⚙\uFE0F " + languageData.buttons().settings().name());
         helpButton.setText("❔ " + languageData.buttons().help());
         mainMenuButton.setText("🔙 " + languageData.buttons().menu());
+        useCategoryButton.setText(languageData.buttons().settings().useCategory());
+        enableButton.setText(languageData.buttons().settings().enable());
+        disableButton.setText(languageData.buttons().settings().disable());
     }
 
     private void initInlineKeyboardButtonCallbackData() {
@@ -89,5 +119,8 @@ public class InlineKeyboardInitializer {
         settingsButton.setCallbackData(SETTINGS.getCommand());
         helpButton.setCallbackData(HELP.getCommand());
         mainMenuButton.setCallbackData(MENU.getCommand());
+        useCategoryButton.setCallbackData(CATEGORY.getCommand());
+        enableButton.setCallbackData(ENABLE.getCommand());
+        disableButton.setCallbackData(DISABLE.getCommand());
     }
 }
