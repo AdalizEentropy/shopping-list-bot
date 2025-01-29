@@ -15,6 +15,7 @@ import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.property.BotProperties;
 import ru.adaliza.chatbot.service.ProductService;
 import ru.adaliza.chatbot.service.UserService;
+import ru.adaliza.chatbot.service.UserSettingsService;
 import ru.adaliza.chatbot.service.language.LanguageCode;
 import ru.adaliza.chatbot.service.language.LanguageConverter;
 import ru.adaliza.chatbot.service.language.model.LanguageData;
@@ -25,6 +26,7 @@ import ru.adaliza.chatbot.service.language.model.LanguageData;
 public class TextMessageService implements MessageService<Serializable> {
     private final UserService userService;
     private final ProductService productService;
+    private final UserSettingsService userSettingsService;
     private final BotProperties properties;
     private final LanguageConverter languageConverter;
     private final InlineKeyboardInitializer keyboardInitializer;
@@ -35,9 +37,9 @@ public class TextMessageService implements MessageService<Serializable> {
         Optional<User> user = userService.getUser(chatId);
 
         if (user.isPresent() && user.get().getChatPhase() == ADD) {
+            LanguageCode languageCode = userSettingsService.getLanguage(chatId);
             int productQuantity = productService.getProductQuantity(chatId);
-            LanguageData languageData =
-                    languageConverter.getLanguageData(update.getMessage().getFrom());
+            LanguageData languageData = languageConverter.getLanguageData(languageCode);
             if (productQuantity >= properties.getMaxProductQuantity()) {
                 return createReplyKeyboardMessage(
                         chatId,
@@ -46,8 +48,6 @@ public class TextMessageService implements MessageService<Serializable> {
                         languageData);
             } else {
                 String product = update.getMessage().getText();
-                LanguageCode languageCode =
-                        languageConverter.getLanguageCode(update.getMessage().getFrom());
                 productService.addProduct(chatId, product, languageCode);
                 String text = String.format(languageData.added(), product);
                 return createReplyKeyboardMessage(

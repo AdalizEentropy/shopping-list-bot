@@ -14,15 +14,22 @@ import ru.adaliza.chatbot.service.language.model.LanguageData;
 public class BaseLanguageConverter implements LanguageConverter {
     private final FileService<Language> languageFileService;
 
+    @Override
     public LanguageData getLanguageData(User user) {
         LanguageCode languageCode = getLanguageCode(user);
-        if (languageCode == LanguageCode.RU) {
+        return getLanguageData(languageCode);
+    }
+
+    @Override
+    public LanguageData getLanguageData(LanguageCode language) {
+        if (language == LanguageCode.RU) {
             return languageFileService.getData().ru();
         } else {
             return languageFileService.getData().en();
         }
     }
 
+    @Override
     public LanguageCode getLanguageCode(User user) {
         String languageCode = user.getLanguageCode();
         if (LanguageCode.valueOfCode(languageCode) == LanguageCode.RU) {

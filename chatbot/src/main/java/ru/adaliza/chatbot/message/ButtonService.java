@@ -11,6 +11,8 @@ import ru.adaliza.chatbot.command.ButtonCommands;
 import ru.adaliza.chatbot.command.model.UpdateContext;
 import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.service.UserService;
+import ru.adaliza.chatbot.service.UserSettingsService;
+import ru.adaliza.chatbot.service.language.LanguageCode;
 import ru.adaliza.chatbot.service.language.LanguageConverter;
 import ru.adaliza.chatbot.service.language.model.LanguageData;
 
@@ -19,6 +21,7 @@ import ru.adaliza.chatbot.service.language.model.LanguageData;
 public class ButtonService implements MessageService<Serializable> {
     private final ButtonCommands buttonCommands;
     private final UserService userService;
+    private final UserSettingsService userSettingsService;
     private final LanguageConverter languageConverter;
 
     @Override
@@ -26,8 +29,8 @@ public class ButtonService implements MessageService<Serializable> {
         Long chatId = update.getCallbackQuery().getMessage().getChatId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String command = update.getCallbackQuery().getData();
-        LanguageData languageData =
-                languageConverter.getLanguageData(update.getCallbackQuery().getFrom());
+        LanguageCode languageCode = userSettingsService.getLanguage(chatId);
+        LanguageData languageData = languageConverter.getLanguageData(languageCode);
         BotCommand botCommand = BotCommand.valueOfCommand(command);
         UpdateContext updateContext = new UpdateContext(chatId, messageId, command, languageData);
 

@@ -7,5 +7,7 @@ public interface LanguageConverter {
 
     LanguageData getLanguageData(User user);
 
+    LanguageData getLanguageData(LanguageCode language);
+
     LanguageCode getLanguageCode(User user);
 }
