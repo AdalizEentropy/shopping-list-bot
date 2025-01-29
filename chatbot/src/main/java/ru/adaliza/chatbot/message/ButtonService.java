@@ -1,14 +1,13 @@
 package ru.adaliza.chatbot.message;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.adaliza.chatbot.command.BotCommand;
-import ru.adaliza.chatbot.command.BotCommandService;
+import ru.adaliza.chatbot.command.ButtonCommands;
 import ru.adaliza.chatbot.command.model.UpdateContext;
 import ru.adaliza.chatbot.model.User;
 import ru.adaliza.chatbot.service.UserService;
@@ -18,8 +17,7 @@ import ru.adaliza.chatbot.service.language.model.LanguageData;
 @Service
 @RequiredArgsConstructor
 public class ButtonService implements MessageService<Serializable> {
-    private static final String UNKNOWN_COMMAND = "unknownCommand";
-    private final Map<String, BotCommandService> commands;
+    private final ButtonCommands buttonCommands;
     private final UserService userService;
     private final LanguageConverter languageConverter;
 
@@ -41,46 +39,32 @@ public class ButtonService implements MessageService<Serializable> {
             userService.updatePhase(chatId, botCommand);
         }
 
-        BotApiMethod<Serializable> replyMessage;
-        switch (botCommand) {
-            case ADD -> replyMessage =
-                    commands.get("addCommand").createMessageForCommand(updateContext);
-            case CLEAR -> replyMessage =
-                    commands.get("clearCommand").createMessageForCommand(updateContext);
-            case REMOVE -> replyMessage =
-                    commands.get("removeCommand").createMessageForCommand(updateContext);
-            case SHOW -> replyMessage =
-                    commands.get("showCommand").createMessageForCommand(updateContext);
-            case HELP -> replyMessage =
-                    commands.get("helpCommand").createMessageForCommand(updateContext);
-            case SETTINGS -> replyMessage =
-                    commands.get("settingsCommand").createMessageForCommand(updateContext);
-            case CATEGORY -> replyMessage =
-                    commands.get("useCategoryCommand").createMessageForCommand(updateContext);
-            case MENU -> replyMessage =
-                    commands.get("menuCommand").createMessageForCommand(updateContext);
-            default -> replyMessage =
-                    commands.get(UNKNOWN_COMMAND).createMessageForCommand(updateContext);
-        }
-
-        return replyMessage;
+        return buttonCommands.getCommand(botCommand).createMessageForCommand(updateContext);
     }
 
     private BotApiMethod<Serializable> executeMayBeProductButton(UpdateContext updateContext) {
         Optional<User> user = userService.getUser(updateContext.chatId());
         if (user.isPresent() && user.get().getChatPhase() == BotCommand.REMOVE) {
-            return commands.get("removeCommand").createMessageForCommand(updateContext);
+            return buttonCommands
+                    .getCommand(BotCommand.REMOVE)
+                    .createMessageForCommand(updateContext);
         } else {
-            return commands.get(UNKNOWN_COMMAND).createMessageForCommand(updateContext);
+            return buttonCommands
+                    .getCommand(BotCommand.UNKNOWN)
+                    .createMessageForCommand(updateContext);
         }
     }
 
     private BotApiMethod<Serializable> executeEnableOptionButton(UpdateContext updateContext) {
         Optional<User> user = userService.getUser(updateContext.chatId());
         if (user.isPresent() && user.get().getChatPhase() == BotCommand.CATEGORY) {
-            return commands.get("useCategoryCommand").createMessageForCommand(updateContext);
+            return buttonCommands
+                    .getCommand(BotCommand.CATEGORY)
+                    .createMessageForCommand(updateContext);
         } else {
-            return commands.get(UNKNOWN_COMMAND).createMessageForCommand(updateContext);
+            return buttonCommands
+                    .getCommand(BotCommand.UNKNOWN)
+                    .createMessageForCommand(updateContext);
         }
     }
 }
