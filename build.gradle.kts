@@ -12,7 +12,7 @@ plugins {
 
 idea {
     project {
-        languageLevel = IdeaLanguageLevel(17)
+        languageLevel = IdeaLanguageLevel(21)
     }
     module {
         isDownloadJavadoc = true
@@ -41,8 +41,8 @@ allprojects {
 subprojects {
     plugins.apply(JavaPlugin::class.java)
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     apply(plugin = "name.remal.sonarlint")

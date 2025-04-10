@@ -3,16 +3,15 @@ plugins {
     id("com.google.cloud.tools.jib")
 }
 
-val lombokVersion: String by project
 val telegramVersion: String by project
 val liquibaseVersion: String by project
 val postgresqlVersion: String by project
 
 dependencies {
     //--- lombok ---//
-    implementation("org.projectlombok:lombok:$lombokVersion")
-    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
-    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    implementation("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
 
     // ---spring ---//
     implementation("org.springframework.boot:spring-boot-starter")

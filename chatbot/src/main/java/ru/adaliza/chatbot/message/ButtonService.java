@@ -34,12 +34,14 @@ public class ButtonService implements MessageService<Serializable> {
         BotCommand botCommand = BotCommand.valueOfCommand(command);
         UpdateContext updateContext = new UpdateContext(chatId, messageId, command, languageData);
 
-        if (botCommand == BotCommand.UNKNOWN) {
-            return executeMayBeProductButton(updateContext);
-        } else if (botCommand == BotCommand.ENABLE || botCommand == BotCommand.DISABLE) {
-            return executeEnableOptionButton(updateContext);
-        } else {
-            userService.updatePhase(chatId, botCommand);
+        switch (botCommand) {
+            case UNKNOWN -> {
+                return executeMayBeProductButton(updateContext);
+            }
+            case ENABLE, DISABLE -> {
+                return executeEnableOptionButton(updateContext);
+            }
+            default -> userService.updatePhase(chatId, botCommand);
         }
 
         return buttonCommands.getCommand(botCommand).createMessageForCommand(updateContext);
