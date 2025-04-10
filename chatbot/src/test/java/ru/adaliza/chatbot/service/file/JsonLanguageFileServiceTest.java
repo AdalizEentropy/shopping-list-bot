@@ -1,5 +1,6 @@
 package ru.adaliza.chatbot.service.file;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,21 +14,22 @@ import ru.adaliza.chatbot.service.language.model.Language;
 
 @ExtendWith(MockitoExtension.class)
 class JsonLanguageFileServiceTest {
-    @Mock private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Mock private BotProperties botProperties;
     private JsonLanguageFileService jsonLanguageFileService;
 
     @BeforeEach
-    public void init() {
+    void init() {
         jsonLanguageFileService = new JsonLanguageFileService(objectMapper, botProperties);
     }
 
     @Test
     void testReadFile() {
         when(botProperties.getLanguagesFile())
-                .thenReturn("../main/resources/text-in-languages.json");
+                .thenReturn("src/main/resources/text-in-languages.json");
 
         jsonLanguageFileService.readFile();
         Language data = jsonLanguageFileService.getData();
+        assertThat(data).isNotNull();
     }
 }

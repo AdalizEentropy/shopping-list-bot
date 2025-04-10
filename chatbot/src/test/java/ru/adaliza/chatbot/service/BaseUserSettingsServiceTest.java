@@ -22,7 +22,7 @@ class BaseUserSettingsServiceTest {
     private BaseUserSettingsService userSettingsService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         userSettingsService = new BaseUserSettingsService(userSettingsRepository);
     }
 

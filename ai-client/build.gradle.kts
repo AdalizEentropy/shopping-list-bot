@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id ("org.springframework.boot")
-    id("com.google.cloud.tools.jib")
+    id ("com.google.cloud.tools.jib")
 }
 
 val lombokVersion: String by project

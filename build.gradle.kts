@@ -3,6 +3,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     idea
+    java
     id("io.spring.dependency-management")
     id("org.springframework.boot") apply false
     id("com.diffplug.spotless") apply false
@@ -21,7 +22,7 @@ idea {
 
 allprojects {
     group = "ru.adaliza"
-    version = "3.0.1"
+    version = "3.1.0"
 
     repositories {
         mavenCentral()
@@ -39,7 +40,7 @@ allprojects {
 
 subprojects {
     plugins.apply(JavaPlugin::class.java)
-    extensions.configure<JavaPluginExtension> {
+    java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -48,7 +49,7 @@ subprojects {
     apply<com.diffplug.gradle.spotless.SpotlessPlugin>()
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         java {
-            googleJavaFormat("1.17.0").aosp()
+            googleJavaFormat("1.26.0").aosp()
         }
     }
 
