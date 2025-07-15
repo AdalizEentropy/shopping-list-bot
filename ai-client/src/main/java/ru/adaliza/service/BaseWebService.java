@@ -19,10 +19,15 @@ public class BaseWebService implements WebService {
     private static final String ERROR_CATEGORY = "Other";
     private final WebClient webClient;
     private final JwtService jwtService;
+    private final PromptFileService promptFileService;
 
-    public BaseWebService(@Qualifier("baseWebClient") WebClient webClient, JwtService jwtService) {
+    public BaseWebService(
+            @Qualifier("baseWebClient") WebClient webClient,
+            JwtService jwtService,
+            PromptFileService promptFileService) {
         this.webClient = webClient;
         this.jwtService = jwtService;
+        this.promptFileService = promptFileService;
     }
 
     public Mono<String> getProductCategory(String product, String lang) {
@@ -33,25 +38,6 @@ public class BaseWebService implements WebService {
             log.error(ex.getMessage());
             return Mono.just(ERROR_CATEGORY);
         }
-    }
-
-    private WebMessage createProductCategorySysMessage(String lang) {
-        String languageResult;
-        if ("RU".equals(lang)) {
-            languageResult =
-                    "продукты, одежда, бытовая химия, товары для дома, товары для животных, прочее. ";
-        } else {
-            languageResult =
-                    "food, clothes, household chemicals, household products, pet supplies, other. ";
-        }
-
-        return new WebMessage(
-                WebMessageRole.SYSTEM,
-                "Я хочу создать интернет-магазин, где товары разделены только строго на следующие категории: "
-                        + languageResult
-                        + "Назови, к какой из моих перечисленных категорий относится товар. "
-                        + "Называй только категорию, из мною перечисленных. "
-                        + "Не используй слово \"категория\".");
     }
 
     private Mono<String> makeRequest(String accessToken, String product, String lang) {
@@ -67,8 +53,14 @@ public class BaseWebService implements WebService {
                 .bodyValue(
                         new WebRequest(
                                 List.of(
-                                        createProductCategorySysMessage(lang),
-                                        new WebMessage(WebMessageRole.USER, product))))
+                                        new WebMessage(
+                                                WebMessageRole.SYSTEM,
+                                                promptFileService.getPrompt()),
+                                        new WebMessage(
+                                                WebMessageRole.USER,
+                                                String.format(
+                                                        "{\"text\": \"%s\", \"lang\": \"%s\"}",
+                                                        product, lang)))))
                 .retrieve()
                 .bodyToMono(WebResponse.class)
                 .map(this::mapResponseToCategory)

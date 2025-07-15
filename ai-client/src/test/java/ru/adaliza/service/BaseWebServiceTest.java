@@ -23,6 +23,7 @@ class BaseWebServiceTest {
     private static String testUrl;
     @Mock private JwtService jwtService;
     private BaseWebService baseWebService;
+    @Mock private PromptFileService promptFileService;
 
     @BeforeAll
     static void setUpMockWebServer() throws IOException {
@@ -39,7 +40,10 @@ class BaseWebServiceTest {
     @BeforeEach
     void initialize() {
         baseWebService =
-                new BaseWebService(WebClient.builder().baseUrl(testUrl).build(), jwtService);
+                new BaseWebService(
+                        WebClient.builder().baseUrl(testUrl).build(),
+                        jwtService,
+                        promptFileService);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package ru.adaliza.properties;
 
+import java.nio.file.Path;
 import java.time.Duration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,4 +16,5 @@ public class WebClientProperties {
     private final String clientSecret;
     private final String scope;
     private final Duration responseTimeout;
+    private final Path promptFile;
 }
