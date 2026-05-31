@@ -36,7 +36,7 @@ tasks.getByName<BootJar>("bootJar") {
 //------------------------//
 jib {
     container.creationTime.set("USE_CURRENT_TIMESTAMP")
-    from.image = "bellsoft/liberica-openjdk-alpine-musl:17.0.2-9"
+    from.image = "bellsoft/liberica-openjdk-debian:latest-cds-aarch64"
     to {
         image = "adalizaentropy/ai-client"
         tags = setOf(project.version.toString())
